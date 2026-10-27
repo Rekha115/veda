@@ -1,0 +1,763 @@
+/* ==========================================================================
+   VEDA Portal - Government of India / AICTE Institutional Login Styles
+   ========================================================================== */
+
+/* Main Page Container */
+.veda-login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  color: #1a202c;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   1. Top Utility Bar
+   -------------------------------------------------------------------------- */
+.veda-top-utility-bar {
+  background-color: #fbfbfb;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.76rem;
+  color: #2b303a;
+  padding: 4px 32px;
+  flex-shrink: 0;
+}
+
+.veda-top-utility-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.veda-utility-left {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #1f2937;
+}
+
+.veda-utility-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.veda-skip-link {
+  color: #4b5563;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.veda-skip-link:hover,
+.veda-skip-link:focus {
+  color: #f36b16;
+  text-decoration: underline;
+}
+
+.veda-font-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.veda-font-btn {
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 3px;
+  padding: 1px 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1.3;
+}
+
+.veda-font-btn:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.veda-font-btn.active {
+  background: #f36b16;
+  color: #ffffff;
+  border-color: #f36b16;
+}
+
+.veda-lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.veda-lang-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #4b5563;
+  font-size: 0.76rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.veda-lang-btn.active {
+  font-weight: 700;
+  color: #111827;
+}
+
+.veda-lang-divider {
+  color: #9ca3af;
+}
+
+/* --------------------------------------------------------------------------
+   2. Institutional Header
+   -------------------------------------------------------------------------- */
+.veda-header {
+  background: #ffffff;
+  padding: 10px 32px;
+  flex-shrink: 0;
+}
+
+.veda-header-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.veda-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.veda-aicte-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.veda-aicte-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.veda-aicte-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.veda-aicte-hindi {
+  font-size: 0.76rem;
+  color: #6b7280;
+  margin-top: 1px;
+  font-weight: 500;
+}
+
+.veda-aicte-sub {
+  font-size: 0.78rem;
+  color: #4b5563;
+  margin-top: 1px;
+}
+
+.veda-header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.veda-brand-wordmark {
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.veda-brand-divider {
+  width: 1px;
+  height: 36px;
+  background-color: #cbd5e1;
+}
+
+.veda-brand-subtitle {
+  font-size: 0.8rem;
+  color: #475569;
+  line-height: 1.3;
+  max-width: 220px;
+}
+
+.veda-header-divider {
+  height: 3px;
+  background-color: #f36b16;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   3. Main Hero Two-Column Layout
+   -------------------------------------------------------------------------- */
+.veda-main-hero {
+  flex: 1;
+  display: flex;
+  min-height: calc(100vh - 150px);
+}
+
+/* Left Panel - Rich Orange (~55%) */
+.veda-left-panel {
+  flex: 1.22;
+  background-color: #f36b16;
+  color: #000000;
+  padding: 32px 48px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.veda-left-content {
+  max-width: 720px;
+  z-index: 2;
+}
+
+.veda-hero-title {
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: #000000;
+  margin: 0 0 10px 0;
+  line-height: 1;
+}
+
+.veda-hero-tagline {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #000000;
+  line-height: 1.35;
+  margin: 0 0 14px 0;
+}
+
+.veda-hero-desc {
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: #000000;
+  margin: 0 0 18px 0;
+  font-weight: 500;
+}
+
+.veda-features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 14px 0;
+}
+
+.veda-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 5px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.13);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: #000000;
+  font-weight: 500;
+}
+
+.veda-feature-item:last-child {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.13);
+}
+
+.veda-check-icon {
+  font-weight: 900;
+  font-size: 0.92rem;
+  color: #000000;
+  flex-shrink: 0;
+  line-height: 1.3;
+}
+
+.veda-left-disclaimer {
+  background: rgba(0, 0, 0, 0.05);
+  border-left: 3px solid #000000;
+  padding: 8px 12px;
+  font-size: 0.77rem;
+  line-height: 1.45;
+  color: #000000;
+  margin-top: 12px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+/* Architectural Line Illustration at bottom */
+.veda-building-container {
+  width: 100%;
+  max-width: 580px;
+  margin: 4px auto 0;
+  opacity: 0.95;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.veda-building-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Right Panel - Cool Grey (~45%) */
+.veda-right-panel {
+  flex: 0.98;
+  background-color: #f2f4f7;
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.veda-login-container {
+  width: 100%;
+  max-width: 440px;
+}
+
+/* White Login Card */
+.veda-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-top: 4px solid #111111;
+  border-radius: 4px;
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  padding: 28px 28px 24px;
+}
+
+.veda-card-heading {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.01em;
+}
+
+.veda-card-subtext {
+  font-size: 0.84rem;
+  color: #64748b;
+  line-height: 1.4;
+  margin: 0 0 18px 0;
+}
+
+/* Role Selector Segmented Control */
+.veda-role-selector {
+  display: flex;
+  background-color: #e5e7eb;
+  border-radius: 4px;
+  padding: 3px;
+  gap: 3px;
+  margin-bottom: 18px;
+}
+
+.veda-role-tab {
+  flex: 1;
+  border: none;
+  background: #f1f5f9;
+  color: #475569;
+  padding: 8px 12px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+
+.veda-role-tab:hover:not(.active) {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.veda-role-tab.active {
+  background-color: #f36b16;
+  color: #111827;
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Styles */
+.veda-form-group {
+  margin-bottom: 14px;
+}
+
+.veda-form-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 5px;
+}
+
+.veda-input-text {
+  width: 100%;
+  height: 40px;
+  padding: 8px 12px;
+  font-size: 0.88rem;
+  color: #111827;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 0;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.veda-input-text:focus {
+  outline: none;
+  border-color: #f36b16;
+  box-shadow: 0 0 0 3px rgba(243, 107, 22, 0.15);
+}
+
+.veda-password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.veda-password-wrapper .veda-input-text {
+  padding-right: 56px;
+}
+
+.veda-show-hide-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 4px 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1f2937;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.veda-show-hide-btn:hover {
+  color: #f36b16;
+}
+
+/* Error Alert */
+.veda-alert-error {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  margin-bottom: 12px;
+}
+
+/* Form Actions Row */
+.veda-form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  margin-top: 10px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.veda-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #374151;
+  cursor: pointer;
+  font-weight: 500;
+  margin-bottom: 0;
+  user-select: none;
+}
+
+.veda-checkbox-label input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: #f36b16;
+  cursor: pointer;
+}
+
+.veda-link-inline {
+  color: #1f2937;
+  text-decoration: none;
+  font-weight: 500;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.veda-link-inline:hover {
+  color: #f36b16;
+  text-decoration: underline;
+}
+
+/* Submit Button */
+.veda-btn-login {
+  width: 100%;
+  height: 42px;
+  background-color: #f36b16;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.94rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.05s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.veda-btn-login:hover:not(:disabled) {
+  background-color: #e05e0e;
+}
+
+.veda-btn-login:active:not(:disabled) {
+  background-color: #cb530b;
+  transform: translateY(1px);
+}
+
+.veda-btn-login:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Secondary Links under Button */
+.veda-card-secondary-links {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.8rem;
+  color: #4b5563;
+}
+
+.veda-card-secondary-links a,
+.veda-card-secondary-links button {
+  color: #1f2937;
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-family: inherit;
+  display: inline;
+}
+
+.veda-card-secondary-links a:hover,
+.veda-card-secondary-links button:hover {
+  color: #f36b16;
+  text-decoration: underline;
+}
+
+/* Demonstration Prototype Notice Box */
+.veda-demo-notice-box {
+  margin-top: 14px;
+  background-color: #fffde7;
+  border: 1px solid #f6e05e;
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: #744210;
+}
+
+.veda-demo-notice-box strong {
+  color: #553008;
+}
+
+/* --------------------------------------------------------------------------
+   4. Footer
+   -------------------------------------------------------------------------- */
+.veda-footer {
+  background-color: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  padding: 12px 32px;
+  font-size: 0.76rem;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.veda-footer-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.veda-footer-disclaimer {
+  max-width: 760px;
+  line-height: 1.4;
+}
+
+.veda-footer-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.veda-footer-link {
+  color: #334155;
+  text-decoration: none;
+  font-weight: 600;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 0.76rem;
+  transition: color 0.15s ease;
+}
+
+.veda-footer-link:hover {
+  color: #f36b16;
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   5. Interactive Help / Policy Modal
+   -------------------------------------------------------------------------- */
+.veda-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.veda-modal {
+  background: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 480px;
+  border-top: 4px solid #f36b16;
+  padding: 24px 28px;
+  position: relative;
+}
+
+.veda-modal-title {
+  margin: 0 0 12px 0;
+  font-size: 1.25rem;
+  color: #111827;
+  font-weight: 700;
+}
+
+.veda-modal-body {
+  font-size: 0.88rem;
+  color: #4b5563;
+  line-height: 1.55;
+  margin-bottom: 20px;
+}
+
+.veda-modal-close-btn {
+  background-color: #f36b16;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  float: right;
+}
+
+.veda-modal-close-btn:hover {
+  background-color: #e05e0e;
+}
+
+/* --------------------------------------------------------------------------
+   6. Responsive Layout Breakpoints
+   -------------------------------------------------------------------------- */
+@media (max-width: 980px) {
+  .veda-main-hero {
+    flex-direction: column;
+  }
+
+  .veda-left-panel {
+    flex: none;
+    padding: 32px 24px 16px;
+  }
+
+  .veda-right-panel {
+    flex: none;
+    padding: 36px 20px;
+  }
+
+  .veda-header-inner,
+  .veda-top-utility-inner,
+  .veda-footer-inner {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .veda-top-utility-bar,
+  .veda-header,
+  .veda-footer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .veda-hero-title {
+    font-size: 2.2rem;
+  }
+
+  .veda-hero-tagline {
+    font-size: 0.98rem;
+  }
+
+  .veda-header-right {
+    display: none;
+  }
+
+  .veda-aicte-title {
+    font-size: 0.95rem;
+  }
+
+  .veda-card {
+    padding: 22px 18px;
+  }
+
+  .veda-footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}

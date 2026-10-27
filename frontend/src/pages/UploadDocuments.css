@@ -1,0 +1,193 @@
+/* ==========================================================================
+   VEDA Portal - Upload Documents & Scrutiny Styles
+   ========================================================================== */
+
+.veda-upload-workspace {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.veda-app-summary-bar {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #f36b16;
+  border-radius: 6px;
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.veda-app-summary-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+}
+
+.veda-app-summary-meta {
+  font-size: 0.84rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.veda-upload-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1.35fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Upload Card */
+.veda-upload-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  padding: 24px 28px;
+}
+
+.veda-upload-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 18px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.veda-dropzone-box {
+  border: 2px dashed #cbd5e1;
+  background-color: #f8fafc;
+  border-radius: 6px;
+  padding: 24px 16px;
+  text-align: center;
+  margin-bottom: 16px;
+  transition: all 0.15s ease;
+}
+
+.veda-dropzone-box:hover {
+  border-color: #f36b16;
+  background-color: #fff7ed;
+}
+
+.veda-file-input {
+  width: 100%;
+  font-size: 0.86rem;
+  color: #475569;
+  cursor: pointer;
+}
+
+/* Uploaded Files Card */
+.veda-files-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  padding: 24px 28px;
+}
+
+.veda-doc-item-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  background-color: #ffffff;
+  transition: border-color 0.15s ease;
+}
+
+.veda-doc-item-row:hover {
+  border-color: #cbd5e1;
+  background-color: #fafbfc;
+}
+
+.veda-doc-badge {
+  display: inline-block;
+  background-color: #fff7ed;
+  color: #ea580c;
+  border: 1px solid #ffedd5;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.veda-doc-filename {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+}
+
+.veda-doc-details {
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.veda-doc-status-pill {
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 99px;
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+.veda-doc-status-pill.analysed {
+  background-color: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+/* Actions at bottom */
+.veda-upload-actions-panel {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.veda-btn-run-checks {
+  background-color: #f36b16;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 11px 22px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 1px 3px rgba(243, 107, 22, 0.3);
+}
+
+.veda-btn-run-checks:hover:not(:disabled) {
+  background-color: #e05e0e;
+}
+
+.veda-btn-run-checks:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@media (max-width: 980px) {
+  .veda-upload-grid {
+    grid-template-columns: 1fr;
+  }
+}

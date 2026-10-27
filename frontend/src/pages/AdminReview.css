@@ -1,0 +1,196 @@
+/* ==========================================================================
+   VEDA Portal - Admin Reviewer Workspace Styles
+   ========================================================================== */
+
+.veda-admin-workspace {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.veda-admin-header-block {
+  margin-bottom: 20px;
+}
+
+.veda-admin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.65fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Queue List Column */
+.veda-queue-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.veda-queue-header {
+  padding: 16px 20px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.veda-queue-item {
+  padding: 14px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+  background: #ffffff;
+  width: 100%;
+  text-align: left;
+  border-left: 4px solid transparent;
+}
+
+.veda-queue-item:hover {
+  background-color: #f8fafc;
+}
+
+.veda-queue-item.active {
+  background-color: #fff7ed;
+  border-left-color: #f36b16;
+}
+
+.veda-queue-app-id {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+}
+
+.veda-queue-app-meta {
+  font-size: 0.78rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Reviewer Workbench Column */
+.veda-workbench-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-top: 4px solid #f36b16;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.05);
+  padding: 28px 32px;
+}
+
+.veda-workbench-inst-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 6px 0;
+}
+
+.veda-workbench-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.86rem;
+  color: #475569;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.veda-workbench-metrics-banner {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.veda-workbench-textarea {
+  width: 100%;
+  min-height: 110px;
+  padding: 12px;
+  font-size: 0.88rem;
+  font-family: inherit;
+  color: #0f172a;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  transition: all 0.15s ease;
+}
+
+.veda-workbench-textarea:focus {
+  outline: none;
+  border-color: #f36b16;
+  box-shadow: 0 0 0 3px rgba(243, 107, 22, 0.15);
+}
+
+.veda-workbench-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.veda-btn-decision-amber {
+  background-color: #d97706;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 18px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.veda-btn-decision-amber:hover:not(:disabled) {
+  background-color: #b45309;
+}
+
+.veda-btn-decision-orange-outline {
+  background-color: #ffffff;
+  color: #ea580c;
+  border: 1px solid #ea580c;
+  border-radius: 4px;
+  padding: 9px 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.veda-btn-decision-orange-outline:hover:not(:disabled) {
+  background-color: #fff7ed;
+}
+
+.veda-btn-decision-green-outline {
+  background-color: #ffffff;
+  color: #16a34a;
+  border: 1px solid #16a34a;
+  border-radius: 4px;
+  padding: 9px 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.veda-btn-decision-green-outline:hover:not(:disabled) {
+  background-color: #f0fdf4;
+}
+
+@media (max-width: 980px) {
+  .veda-admin-grid {
+    grid-template-columns: 1fr;
+  }
+}

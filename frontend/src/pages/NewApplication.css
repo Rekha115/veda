@@ -1,0 +1,211 @@
+/* ==========================================================================
+   VEDA Portal - New Application Form Styles
+   ========================================================================== */
+
+.veda-form-page-container {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.veda-page-header-block {
+  margin-bottom: 24px;
+}
+
+.veda-page-main-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.01em;
+}
+
+.veda-page-lead-desc {
+  font-size: 0.88rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Card Container */
+.veda-form-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-top: 4px solid #f36b16;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.05);
+  padding: 32px 36px;
+}
+
+.veda-form-section {
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.veda-form-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 20px;
+  padding-bottom: 0;
+}
+
+.veda-section-heading {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.veda-section-heading-icon {
+  color: #f36b16;
+}
+
+.veda-form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 24px;
+}
+
+.veda-form-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px 24px;
+}
+
+.veda-field-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.veda-field-label {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+.veda-field-label-req {
+  color: #dc2626;
+  margin-left: 2px;
+}
+
+.veda-field-input,
+.veda-field-select {
+  width: 100%;
+  height: 42px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  color: #0f172a;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+}
+
+.veda-field-input:focus,
+.veda-field-select:focus {
+  outline: none;
+  border-color: #f36b16;
+  box-shadow: 0 0 0 3px rgba(243, 107, 22, 0.15);
+}
+
+.veda-field-hint {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+/* Callout Box for Declarations */
+.veda-declaration-box {
+  background-color: #fffbeb;
+  border: 1px solid #fef3c7;
+  border-radius: 6px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.veda-declaration-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #f36b16;
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+.veda-declaration-text {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: #92400e;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Form Action Buttons */
+.veda-form-actions-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.veda-btn-cancel {
+  background-color: #ffffff;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.veda-btn-cancel:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.veda-btn-submit-primary {
+  background-color: #f36b16;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 24px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 3px rgba(243, 107, 22, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.veda-btn-submit-primary:hover:not(:disabled) {
+  background-color: #e05e0e;
+}
+
+.veda-btn-submit-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .veda-form-grid-2,
+  .veda-form-grid-3 {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .veda-form-card {
+    padding: 24px 20px;
+  }
+}
