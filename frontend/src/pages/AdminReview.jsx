@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api";
+import { useLanguage } from "../context/LanguageContext";
 import "./AdminReview.css";
 
 export default function AdminReview() {
+  const { t, formatCategory, formatDecision } = useLanguage();
   const [apps, setApps] = useState([]);
   const [selectedId, setSelectedId] = useState("");
   const [notes, setNotes] = useState("");
@@ -49,19 +51,19 @@ export default function AdminReview() {
   return (
     <div className="veda-admin-workspace">
       {/* Breadcrumbs */}
-      <nav className="veda-breadcrumb" aria-label="Breadcrumb" style={{ marginBottom: 16 }}>
-        <Link to="/dashboard" className="veda-breadcrumb-link">Home</Link>
+      <nav className="veda-breadcrumb" aria-label={t("nav.navigation")} style={{ marginBottom: 16 }}>
+        <Link to="/dashboard" className="veda-breadcrumb-link">{t("common.home")}</Link>
         <span className="veda-breadcrumb-sep">/</span>
-        <span className="veda-breadcrumb-current">Admin Scrutiny Review</span>
+        <span className="veda-breadcrumb-current">{t("admin.breadcrumbCurrent")}</span>
       </nav>
 
       {/* Header Block */}
       <div className="veda-admin-header-block">
         <h1 style={{ fontSize: "1.6rem", fontWeight: 800, color: "#0f172a", margin: "0 0 6px" }}>
-          AICTE Scrutiny Officer Workbench
+          {t("admin.title")}
         </h1>
         <p style={{ margin: 0, fontSize: "0.85rem", color: "#64748b" }}>
-          Human scrutiny interface before regulatory decisions. Review automated flags, inspect OCR evidence, and record recommendations.
+          {t("admin.subtitle")}
         </p>
       </div>
 
@@ -88,9 +90,9 @@ export default function AdminReview() {
         <div className="veda-queue-card">
           <div className="veda-queue-header">
             <h2 style={{ fontSize: "1.05rem", fontWeight: 700, margin: 0, color: "#0f172a" }}>
-              Application Queue
+              {t("admin.queueTitle")}
             </h2>
-            <span className="veda-pill-badge">{apps.length} in queue</span>
+            <span className="veda-pill-badge">{t("admin.inQueueBadge", { count: apps.length })}</span>
           </div>
 
           <div>
@@ -117,11 +119,11 @@ export default function AdminReview() {
                     }`}
                     style={{ fontSize: "0.7rem", padding: "1px 6px" }}
                   >
-                    {a.review?.decision || a.status}
+                    {formatDecision(a.review?.decision || a.status)}
                   </span>
                 </div>
                 <div className="veda-queue-app-meta">
-                  <span>{a.category}</span>
+                  <span>{formatCategory(a.category)}</span>
                   <span>·</span>
                   <span>{a.instituteName ? a.instituteName.substring(0, 24) + "…" : a.instituteCode}</span>
                 </div>
@@ -130,7 +132,7 @@ export default function AdminReview() {
 
             {apps.length === 0 && (
               <div style={{ padding: 24, textAlign: "center", color: "#64748b" }}>
-                Queue is empty. No applications submitted yet.
+                {t("admin.queueEmpty")}
               </div>
             )}
           </div>
@@ -140,7 +142,7 @@ export default function AdminReview() {
         <div className="veda-workbench-card">
           {!selected ? (
             <div style={{ padding: 40, textAlign: "center", color: "#64748b" }}>
-              Select an application from the queue to start scrutiny review.
+              {t("admin.selectAppPrompt")}
             </div>
           ) : (
             <>
@@ -148,11 +150,11 @@ export default function AdminReview() {
                 <div>
                   <h2 className="veda-workbench-inst-title">{selected.instituteName}</h2>
                   <div className="veda-workbench-meta-row">
-                    <span>App Ref: <strong>{selected.id}</strong></span>
+                    <span>{t("admin.appRef")}: <strong>{selected.id}</strong></span>
                     <span>·</span>
-                    <span>Category: <strong>{selected.category}</strong></span>
+                    <span>{t("admin.category")}: <strong>{formatCategory(selected.category)}</strong></span>
                     <span>·</span>
-                    <span>Contact: <strong>{selected.contactName}</strong></span>
+                    <span>{t("admin.contact")}: <strong>{selected.contactName}</strong></span>
                   </div>
                 </div>
 
@@ -161,7 +163,7 @@ export default function AdminReview() {
                   className="veda-btn-view-action"
                   style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
                 >
-                  <span>Open Full Scrutiny Report</span>
+                  <span>{t("admin.openFullReport")}</span>
                   <span>→</span>
                 </Link>
               </div>
@@ -170,28 +172,32 @@ export default function AdminReview() {
               <div className="veda-workbench-metrics-banner">
                 <div>
                   <span style={{ fontSize: "0.76rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700 }}>
-                    Automated Findings
+                    {t("admin.automatedFindings")}
                   </span>
                   <div style={{ fontSize: "1.2rem", fontWeight: 800, color: "#0f172a" }}>
-                    {selected.validation?.findings?.length || 0} Flag(s)
+                    {t("admin.flagsCount", { count: selected.validation?.findings?.length || 0 })}
                   </div>
                 </div>
 
                 <div>
                   <span style={{ fontSize: "0.76rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700 }}>
-                    Overall Validation
+                    {t("admin.overallValidation")}
                   </span>
                   <div style={{ fontSize: "1rem", fontWeight: 700, color: selected.validation?.overall === "PASS" ? "#15803d" : "#b45309" }}>
-                    {selected.validation?.overall || "Not validated"}
+                    {selected.validation?.overall === "PASS"
+                      ? t("common.pass")
+                      : selected.validation?.overall === "FAIL"
+                      ? t("common.fail")
+                      : selected.validation?.overall || t("admin.notValidated")}
                   </div>
                 </div>
 
                 <div>
                   <span style={{ fontSize: "0.76rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700 }}>
-                    Current Review Decision
+                    {t("admin.currentReviewDecision")}
                   </span>
                   <div style={{ fontSize: "1rem", fontWeight: 700, color: "#0f172a", textTransform: "capitalize" }}>
-                    {selected.review?.decision?.replace(/_/g, " ") || "Pending Scrutiny"}
+                    {formatDecision(selected.review?.decision) || t("admin.pendingScrutiny")}
                   </div>
                 </div>
               </div>
@@ -202,21 +208,21 @@ export default function AdminReview() {
                   htmlFor="notes"
                   style={{ display: "block", fontSize: "0.85rem", fontWeight: 700, color: "#1e293b", marginBottom: 6 }}
                 >
-                  Reviewer Observations & Justification Note
+                  {t("admin.reviewerNotesLabel")}
                 </label>
                 <textarea
                   id="notes"
                   className="veda-workbench-textarea"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Record why additional evidence or inspection is needed, or summarize scrutiny findings for the regional officer."
+                  placeholder={t("admin.notesPlaceholder")}
                 />
               </div>
 
               {/* Action Decision Controls */}
               <div>
                 <p style={{ margin: "0 0 10px", fontSize: "0.82rem", fontWeight: 600, color: "#475569" }}>
-                  Record Scrutiny Action:
+                  {t("admin.recordActionTitle")}
                 </p>
                 <div className="veda-workbench-actions">
                   <button
@@ -225,7 +231,7 @@ export default function AdminReview() {
                     disabled={busy}
                     onClick={() => decide("needs_evidence")}
                   >
-                    {busy ? "Saving…" : "⚠️ Request Additional Evidence"}
+                    {busy ? t("admin.saving") : t("admin.reqEvidenceBtn")}
                   </button>
 
                   <button
@@ -234,7 +240,7 @@ export default function AdminReview() {
                     disabled={busy}
                     onClick={() => decide("inspect")}
                   >
-                    {busy ? "Saving…" : "🔍 Flag for Physical Inspection"}
+                    {busy ? t("admin.saving") : t("admin.flagInspectionBtn")}
                   </button>
 
                   <button
@@ -243,7 +249,7 @@ export default function AdminReview() {
                     disabled={busy}
                     onClick={() => decide("cleared_for_officer")}
                   >
-                    {busy ? "Saving…" : "✓ Clear for Competent Officer"}
+                    {busy ? t("admin.saving") : t("admin.clearOfficerBtn")}
                   </button>
                 </div>
               </div>

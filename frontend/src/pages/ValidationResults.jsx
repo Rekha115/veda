@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
+import { useLanguage } from "../context/LanguageContext";
 import "./ValidationResults.css";
 
 const RESULT_BADGE = {
@@ -10,15 +11,6 @@ const RESULT_BADGE = {
   FAIL: "fail",
 };
 
-const METHOD_LABEL = {
-  "pdf-text": "PDF text layer",
-  "pdf-ocr": "Scanned PDF (OCR)",
-  "pdf-text+ocr": "PDF text + OCR",
-  "image-ocr": "Image (OCR)",
-  unsupported: "Unsupported file",
-  failed: "Could not read",
-};
-
 function fieldValue(field) {
   if (!field) return "—";
   if (field.raw) return field.raw;
@@ -26,7 +18,7 @@ function fieldValue(field) {
   return String(field.value);
 }
 
-function FieldRow({ label, field }) {
+function FieldRow({ label, field, getMethodLabel }) {
   return (
     <tr>
       <th scope="row" style={{ fontWeight: 600, color: "#1e293b", fontSize: "0.85rem" }}>
@@ -35,7 +27,7 @@ function FieldRow({ label, field }) {
       <td style={{ fontWeight: 600, color: "#0f172a" }}>{fieldValue(field)}</td>
       <td style={{ color: "#64748b", fontSize: "0.8rem" }}>
         {field?.document ? field.document.name : "—"}
-        {field?.document?.method ? ` · ${METHOD_LABEL[field.document.method] || field.document.method}` : ""}
+        {field?.document?.method ? ` · ${getMethodLabel(field.document.method)}` : ""}
       </td>
       <td>
         <div className="veda-table-evidence-cell">
@@ -48,6 +40,7 @@ function FieldRow({ label, field }) {
 
 export default function ValidationResults() {
   const { id } = useParams();
+  const { t, formatCategory, formatDate } = useLanguage();
   const [appData, setAppData] = useState(null);
   const [error, setError] = useState("");
 
@@ -57,8 +50,24 @@ export default function ValidationResults() {
       .catch((err) => setError(err.message));
   }, [id]);
 
-  if (error) return <div style={{ padding: 32, color: "#b91c1c" }}>Error: {error}</div>;
-  if (!appData) return <div style={{ padding: 40, textAlign: "center", color: "#64748b" }}>Loading validation report…</div>;
+  const getMethodLabel = (methodKey) =>
+    t(`validation.methods.${methodKey}`, null, methodKey || "—");
+
+  if (error) {
+    return (
+      <div style={{ padding: 32, color: "#b91c1c" }}>
+        {t("common.error")}: {error}
+      </div>
+    );
+  }
+
+  if (!appData) {
+    return (
+      <div style={{ padding: 40, textAlign: "center", color: "#64748b" }}>
+        {t("validation.loadingReport")}
+      </div>
+    );
+  }
 
   const v = appData.validation;
   const checks = v?.checks || [];
@@ -68,22 +77,26 @@ export default function ValidationResults() {
   return (
     <div className="veda-report-workspace">
       {/* Breadcrumbs */}
-      <nav className="veda-breadcrumb" aria-label="Breadcrumb" style={{ marginBottom: 16 }}>
-        <Link to="/dashboard" className="veda-breadcrumb-link">Home</Link>
+      <nav className="veda-breadcrumb" aria-label={t("nav.navigation")} style={{ marginBottom: 16 }}>
+        <Link to="/dashboard" className="veda-breadcrumb-link">{t("common.home")}</Link>
         <span className="veda-breadcrumb-sep">/</span>
-        <Link to="/dashboard" className="veda-breadcrumb-link">Applications</Link>
+        <Link to="/dashboard" className="veda-breadcrumb-link">{t("newApp.breadcrumbApplications")}</Link>
         <span className="veda-breadcrumb-sep">/</span>
-        <span className="veda-breadcrumb-current">{appData.id} Scrutiny Report</span>
+        <span className="veda-breadcrumb-current">{t("validation.breadcrumbReport", { id: appData.id })}</span>
       </nav>
 
       {/* Page Header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
         <div>
           <h1 style={{ fontSize: "1.6rem", fontWeight: 800, color: "#0f172a", margin: "0 0 4px" }}>
-            Document Validation & Scrutiny Report
+            {t("validation.title")}
           </h1>
           <p style={{ margin: 0, fontSize: "0.85rem", color: "#64748b" }}>
-            Application <strong>{appData.id}</strong> · {appData.category} · {appData.instituteName}
+            {t("validation.appSubtext", {
+              id: appData.id,
+              category: formatCategory(appData.category),
+              institute: appData.instituteName,
+            })}
           </p>
         </div>
 
@@ -94,14 +107,14 @@ export default function ValidationResults() {
             style={{ padding: "8px 16px", fontSize: "0.84rem" }}
             onClick={() => window.print()}
           >
-            🖨️ Print / Export Report
+            {t("validation.printExport")}
           </button>
           <Link
             to={`/applications/${id}/upload`}
             className="veda-btn-submit-primary"
             style={{ padding: "8px 16px", fontSize: "0.84rem", textDecoration: "none" }}
           >
-            Manage Documents
+            {t("validation.manageDocs")}
           </Link>
         </div>
       </div>
@@ -109,46 +122,50 @@ export default function ValidationResults() {
       {!v ? (
         <div className="veda-report-overview-card" style={{ textAlign: "center", padding: "48px 24px" }}>
           <p style={{ fontSize: "1.1rem", fontWeight: 600, color: "#0f172a", margin: "0 0 12px" }}>
-            No automated checks have been run on this application yet.
+            {t("validation.noChecksTitle")}
           </p>
           <p style={{ color: "#64748b", margin: "0 0 20px", fontSize: "0.88rem" }}>
-            Upload supporting files such as the EoA letter, NOCs, and faculty lists to generate an evidence-based report.
+            {t("validation.noChecksDesc")}
           </p>
           <Link className="veda-btn-submit-primary" to={`/applications/${id}/upload`} style={{ textDecoration: "none" }}>
-            Proceed to Document Upload →
+            {t("validation.proceedToUploadBtn")}
           </Link>
         </div>
       ) : (
         <>
           {/* 1. Overview Banner */}
-          <section className={`veda-report-overview-card ${overallStatus}`} aria-label="Scrutiny Summary">
+          <section className={`veda-report-overview-card ${overallStatus}`} aria-label={t("validation.outcomeTitle")}>
             <div className="veda-report-top-row">
-              <h2 className="veda-report-title">Automated Validation Outcome</h2>
+              <h2 className="veda-report-title">{t("validation.outcomeTitle")}</h2>
               <span className={`veda-report-status-badge ${overallStatus}`}>
-                {v.overall || "REVIEW_REQUIRED"}
+                {v.overall === "PASS"
+                  ? t("common.pass")
+                  : v.overall === "FAIL"
+                  ? t("common.fail")
+                  : t("common.reviewRequired")}
               </span>
             </div>
             <p className="veda-report-summary-text">{v.summary}</p>
             <p className="veda-report-meta-text">
-              Generated: <strong>{new Date(v.generatedAt).toLocaleString()}</strong> · Institutional Reference Source: <strong>{v.recordUsed?.source || "Demo Institutional Register"}</strong>
+              {t("validation.generatedLabel")}: <strong>{formatDate(v.generatedAt)}</strong> · {t("validation.sourceLabel")}: <strong>{v.recordUsed?.source || t("validation.defaultSource")}</strong>
             </p>
           </section>
 
           {/* 2. Authenticity Notice Box */}
           <div className="veda-authenticity-notice" role="note">
-            <strong>Authenticity Status: {v.authenticity?.status || "UNVERIFIED"}</strong>
-            <p>{v.authenticity?.reason || "No live government database API is integrated in this prototype."}</p>
-            <small>{v.authenticity?.recommendation || "Physical inspection or original document verification recommended."}</small>
+            <strong>{t("validation.authenticityStatus")}: {v.authenticity?.status || t("common.unverified")}</strong>
+            <p>{v.authenticity?.reason || t("validation.defaultUnverified")}</p>
+            <small>{v.authenticity?.recommendation || t("validation.defaultRecommendation")}</small>
           </div>
 
           {/* 3. Extracted Fields Table */}
           {extracted && (
             <>
-              <section className="veda-report-section-card" aria-label="Extracted Fields">
+              <section className="veda-report-section-card" aria-label={t("validation.detectedFieldsTitle")}>
                 <div className="veda-report-section-header">
-                  <h2 className="veda-report-section-title">Detected Fields & OCR Evidence</h2>
+                  <h2 className="veda-report-section-title">{t("validation.detectedFieldsTitle")}</h2>
                   <p className="veda-report-section-desc">
-                    Values extracted via automated text heuristics and OCR engines. Human scrutiny should verify original evidence.
+                    {t("validation.detectedFieldsDesc")}
                   </p>
                 </div>
 
@@ -156,33 +173,33 @@ export default function ValidationResults() {
                   <table className="veda-custom-table">
                     <thead>
                       <tr>
-                        <th>Field Name</th>
-                        <th>Detected Value</th>
-                        <th>Document Source & Method</th>
-                        <th>Extracted Evidence</th>
+                        <th>{t("validation.thFieldName")}</th>
+                        <th>{t("validation.thDetectedValue")}</th>
+                        <th>{t("validation.thDocSourceMethod")}</th>
+                        <th>{t("validation.thExtractedEvidence")}</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <FieldRow label="Institution name" field={extracted.institutionName} />
-                      <FieldRow label="Application / reference no." field={extracted.applicationNumber} />
-                      <FieldRow label="Academic year" field={extracted.academicYear} />
-                      <FieldRow label="Approval status" field={extracted.approvalStatus} />
-                      <FieldRow label="Issue date" field={extracted.issueDate} />
-                      <FieldRow label="Validity / expiry date" field={extracted.expiryDate} />
-                      <FieldRow label="Faculty count" field={extracted.facultyCount} />
-                      <FieldRow label="CSE intake" field={extracted.cseIntake} />
-                      <FieldRow label="Issuing authority" field={extracted.issuingAuthority} />
+                      <FieldRow label={t("validation.fields.institutionName")} field={extracted.institutionName} getMethodLabel={getMethodLabel} />
+                      <FieldRow label={t("validation.fields.applicationNumber")} field={extracted.applicationNumber} getMethodLabel={getMethodLabel} />
+                      <FieldRow label={t("validation.fields.academicYear")} field={extracted.academicYear} getMethodLabel={getMethodLabel} />
+                      <FieldRow label={t("validation.fields.approvalStatus")} field={extracted.approvalStatus} getMethodLabel={getMethodLabel} />
+                      <FieldRow label={t("validation.fields.issueDate")} field={extracted.issueDate} getMethodLabel={getMethodLabel} />
+                      <FieldRow label={t("validation.fields.expiryDate")} field={extracted.expiryDate} getMethodLabel={getMethodLabel} />
+                      <FieldRow label={t("validation.fields.facultyCount")} field={extracted.facultyCount} getMethodLabel={getMethodLabel} />
+                      <FieldRow label={t("validation.fields.cseIntake")} field={extracted.cseIntake} getMethodLabel={getMethodLabel} />
+                      <FieldRow label={t("validation.fields.issuingAuthority")} field={extracted.issuingAuthority} getMethodLabel={getMethodLabel} />
                     </tbody>
                   </table>
                 </div>
               </section>
 
               {/* 4. Document Processing Log */}
-              <section className="veda-report-section-card" aria-label="Document Processing">
+              <section className="veda-report-section-card" aria-label={t("validation.docProcessingTitle")}>
                 <div className="veda-report-section-header">
-                  <h2 className="veda-report-section-title">Document Processing & OCR Metrics</h2>
+                  <h2 className="veda-report-section-title">{t("validation.docProcessingTitle")}</h2>
                   <p className="veda-report-section-desc">
-                    Audit of file readability, page counts, OCR confidence scores, and ingestion heuristics.
+                    {t("validation.docProcessingDesc")}
                   </p>
                 </div>
 
@@ -190,12 +207,12 @@ export default function ValidationResults() {
                   <table className="veda-custom-table">
                     <thead>
                       <tr>
-                        <th>File Name</th>
-                        <th>Declared Type</th>
-                        <th>Extraction Engine</th>
-                        <th>Pages Read</th>
-                        <th>Characters</th>
-                        <th>Scrutiny Notes</th>
+                        <th>{t("validation.thFileName")}</th>
+                        <th>{t("validation.thDeclaredType")}</th>
+                        <th>{t("validation.thExtractionEngine")}</th>
+                        <th>{t("validation.thPagesRead")}</th>
+                        <th>{t("validation.thCharacters")}</th>
+                        <th>{t("validation.thScrutinyNotes")}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -203,19 +220,21 @@ export default function ValidationResults() {
                         <tr key={doc.id}>
                           <td style={{ fontWeight: 600, color: "#0f172a" }}>{doc.name}</td>
                           <td>
-                            <span className="veda-pill-badge">{doc.declaredType}</span>
+                            <span className="veda-pill-badge">
+                              {t(`upload.types.${doc.declaredType}`, null, doc.declaredType)}
+                            </span>
                           </td>
-                          <td style={{ color: "#475569" }}>{METHOD_LABEL[doc.method] || doc.method}</td>
+                          <td style={{ color: "#475569" }}>{getMethodLabel(doc.method)}</td>
                           <td>{doc.pagesRead} / {doc.totalPages}</td>
                           <td>
-                            {doc.characters} chars
+                            {doc.characters} {t("validation.charsUnit")}
                             {doc.ocrConfidence !== null && doc.ocrConfidence !== undefined
-                              ? ` (OCR ${doc.ocrConfidence}%)`
+                              ? ` (${t("validation.ocrAccuracy")} ${doc.ocrConfidence}%)`
                               : ""}
                           </td>
                           <td>
                             <div className="veda-table-evidence-cell">
-                              {doc.notes?.length ? doc.notes.join(" ") : "No anomalies detected."}
+                              {doc.notes?.length ? doc.notes.join(" ") : t("validation.noAnomalies")}
                             </div>
                           </td>
                         </tr>
@@ -223,7 +242,7 @@ export default function ValidationResults() {
                       {!(extracted.documents || []).length && (
                         <tr>
                           <td colSpan="6" style={{ textAlign: "center", padding: 24, color: "#64748b" }}>
-                            No documents uploaded for this application.
+                            {t("validation.noDocsUploaded")}
                           </td>
                         </tr>
                       )}
@@ -235,11 +254,11 @@ export default function ValidationResults() {
           )}
 
           {/* 5. Automated Checks */}
-          <section className="veda-report-section-card" aria-label="Compliance Checks">
+          <section className="veda-report-section-card" aria-label={t("validation.ruleChecksTitle")}>
             <div className="veda-report-section-header">
-              <h2 className="veda-report-section-title">Regulatory Compliance Rule Checks</h2>
+              <h2 className="veda-report-section-title">{t("validation.ruleChecksTitle")}</h2>
               <p className="veda-report-section-desc">
-                Automated matching against AICTE Approval Process Handbook (APH 2026-27) parameters.
+                {t("validation.ruleChecksDesc")}
               </p>
             </div>
 
@@ -247,10 +266,10 @@ export default function ValidationResults() {
               <table className="veda-custom-table">
                 <thead>
                   <tr>
-                    <th>Rule Check</th>
-                    <th>Outcome</th>
-                    <th>Reason / Logic</th>
-                    <th>Audit Evidence</th>
+                    <th>{t("validation.thRuleCheck")}</th>
+                    <th>{t("validation.thOutcome")}</th>
+                    <th>{t("validation.thReasonLogic")}</th>
+                    <th>{t("validation.thAuditEvidence")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -262,7 +281,11 @@ export default function ValidationResults() {
                           <td style={{ fontWeight: 600, color: "#0f172a" }}>{check.label}</td>
                           <td>
                             <span className={`veda-status-badge ${badgeClass}`}>
-                              {check.status}
+                              {check.status === "PASS"
+                                ? t("common.pass")
+                                : check.status === "FAIL"
+                                ? t("common.fail")
+                                : t("common.review")}
                             </span>
                           </td>
                           <td style={{ color: "#334155" }}>{check.reason}</td>
@@ -295,24 +318,26 @@ export default function ValidationResults() {
           <div className="veda-report-grid-2">
             <div className="veda-panel-card">
               <div className="veda-panel-header">
-                <h3 className="veda-panel-title">Required Documents Checklist</h3>
+                <h3 className="veda-panel-title">{t("validation.requiredDocsTitle")}</h3>
               </div>
               <div>
                 {(v.checklist || []).map((c) => (
                   <div key={c.type} className="veda-checklist-item">
-                    <span>{c.label}</span>
+                    <span>{t(`upload.types.${c.type}`, null, c.label)}</span>
                     <span
                       className={`veda-checklist-status ${
                         c.status === "present" ? "present" : "missing"
                       }`}
                     >
-                      {c.status}
+                      {c.status === "present"
+                        ? (t("common.verified") || "present")
+                        : (t("common.rejected") || "missing")}
                     </span>
                   </div>
                 ))}
                 {!(v.checklist || []).length && (
                   <div style={{ padding: 20, color: "#64748b", textAlign: "center" }}>
-                    No checklist items defined for this category.
+                    {t("validation.noChecklist")}
                   </div>
                 )}
               </div>
@@ -320,14 +345,14 @@ export default function ValidationResults() {
 
             <div className="veda-panel-card">
               <div className="veda-panel-header">
-                <h3 className="veda-panel-title">Scrutiny Audit Trail</h3>
+                <h3 className="veda-panel-title">{t("validation.auditTrailTitle")}</h3>
               </div>
               <div>
                 {appData.audit.map((a, i) => (
                   <div key={i} className="veda-audit-item">
                     <div style={{ fontWeight: 600, color: "#0f172a" }}>{a.action}</div>
                     <div className="veda-audit-meta">
-                      Actor: <strong>{a.actor}</strong> · {new Date(a.at).toLocaleString()}
+                      {t("validation.actorLabel")}: <strong>{a.actor}</strong> · {formatDate(a.at)}
                     </div>
                   </div>
                 ))}
@@ -340,10 +365,10 @@ export default function ValidationResults() {
       {/* Footer Navigation */}
       <div style={{ display: "flex", gap: 12, marginTop: 20 }}>
         <Link to={`/applications/${id}/upload`} className="veda-btn-cancel">
-          ← Manage Application Documents
+          {t("validation.manageAppDocsLink")}
         </Link>
         <Link to="/dashboard" className="veda-btn-cancel">
-          Back to Dashboard
+          {t("validation.backDashboardLink")}
         </Link>
       </div>
     </div>

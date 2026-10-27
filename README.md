@@ -26,8 +26,9 @@ It automates pre-scrutiny checks by:
 The platform features an authentic Indian institutional government-portal design system:
 * **Branding & Emblems**: Official All India Council for Technical Education (AICTE) emblem and Ministry of Education identifiers.
 * **Palette**: Institutional saffron/orange (`#F36B16`), dark text (`#0F172A`), clean white cards (`#FFFFFF`), and cool-grey workspaces (`#F2F4F7`).
-* **Accessibility**: Scalable typography controls (**A-**, **A**, **A+**), bilingual display options (**English | हिंदी**), and GIGW-compliant contrast and keyboard navigation.
+* **Accessibility & Language**: Scalable typography controls (**A-**, **A**, **A+**), complete bilingual switching (**English | हिंदी**) across all pages with `localStorage` persistence, Noto Sans Devanagari font rendering, and GIGW-compliant contrast and keyboard navigation.
 * **Responsive Architecture**: Polished responsive layouts for desktop, tablet, and mobile across all screens.
+
 
 ---
 

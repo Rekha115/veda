@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { clearSession, getToken, getUser } from "../api";
+import { useLanguage } from "../context/LanguageContext";
 import aicteLogo from "../assets/aicte-logo.png";
 import "./Layout.css";
 
@@ -8,10 +9,10 @@ export default function Layout() {
   const user = getUser();
   const navigate = useNavigate();
   const location = useLocation();
+  const { language, setLanguage, t } = useLanguage();
 
-  // Accessibility & language state
+  // Accessibility font scaling
   const [fontSizeScale, setFontSizeScale] = useState(1);
-  const [language, setLanguage] = useState("en");
 
   // Informational modal for shell links
   const [modalInfo, setModalInfo] = useState(null);
@@ -36,21 +37,21 @@ export default function Layout() {
       style={{ fontSize: `${fontSizeScale * 100}%` }}
     >
       {/* 1. Slim Top Utility Bar */}
-      <section className="veda-shell-topbar" aria-label="National Portal Utilities">
+      <section className="veda-shell-topbar" aria-label={t("common.govIndia")}>
         <div className="veda-shell-topbar-inner">
           <div className="veda-shell-utility-left">
-            Government of India &nbsp;|&nbsp; Ministry of Education
+            {t("common.govIndia")}
           </div>
           <div className="veda-shell-utility-right">
             <a href="#main-content" className="veda-shell-skip-link">
-              Skip to main content
+              {t("common.skipToContent")}
             </a>
-            <div className="veda-shell-font-controls" aria-label="Font size controls">
+            <div className="veda-shell-font-controls" aria-label={t("common.fontSizeControls")}>
               <button
                 type="button"
                 className={`veda-shell-font-btn ${fontSizeScale === 0.92 ? "active" : ""}`}
                 onClick={() => setFontSizeScale(0.92)}
-                title="Decrease font size"
+                title={t("common.decreaseFont")}
               >
                 A-
               </button>
@@ -58,7 +59,7 @@ export default function Layout() {
                 type="button"
                 className={`veda-shell-font-btn ${fontSizeScale === 1 ? "active" : ""}`}
                 onClick={() => setFontSizeScale(1)}
-                title="Default font size"
+                title={t("common.defaultFont")}
               >
                 A
               </button>
@@ -66,18 +67,18 @@ export default function Layout() {
                 type="button"
                 className={`veda-shell-font-btn ${fontSizeScale === 1.08 ? "active" : ""}`}
                 onClick={() => setFontSizeScale(1.08)}
-                title="Increase font size"
+                title={t("common.increaseFont")}
               >
                 A+
               </button>
             </div>
-            <div className="veda-shell-lang-switch" aria-label="Language options">
+            <div className="veda-shell-lang-switch" aria-label={t("common.switchLanguageAria")}>
               <button
                 type="button"
                 className={`veda-shell-lang-btn ${language === "en" ? "active" : ""}`}
                 onClick={() => setLanguage("en")}
               >
-                English
+                {t("common.languageNameEn")}
               </button>
               <span style={{ color: "#9ca3af" }}>|</span>
               <button
@@ -85,7 +86,7 @@ export default function Layout() {
                 className={`veda-shell-lang-btn ${language === "hi" ? "active" : ""}`}
                 onClick={() => setLanguage("hi")}
               >
-                हिंदी
+                {t("common.languageNameHi")}
               </button>
             </div>
           </div>
@@ -98,28 +99,28 @@ export default function Layout() {
           <NavLink to="/dashboard" className="veda-shell-header-left">
             <img
               src={aicteLogo}
-              alt="Official AICTE Emblem"
+              alt={t("common.aicteCouncil")}
               className="veda-shell-aicte-logo"
             />
             <div className="veda-shell-aicte-text">
               <h1 className="veda-shell-aicte-title">
-                All India Council for Technical Education
+                {t("common.aicteCouncil")}
               </h1>
               <span className="veda-shell-aicte-hindi">
-                अखिल भारतीय तकनीकी शिक्षा परिषद
+                {t("common.aicteHindi")}
               </span>
               <span className="veda-shell-aicte-sub">
-                Ministry of Education, Government of India
+                {t("common.ministryOfEducation")}
               </span>
             </div>
           </NavLink>
 
           <div className="veda-shell-header-right">
             <div className="veda-shell-brand-group">
-              <span className="veda-shell-brand-wordmark">VEDA</span>
+              <span className="veda-shell-brand-wordmark">{t("common.vedaWordmark")}</span>
               <div className="veda-shell-brand-divider" aria-hidden="true" />
               <span className="veda-shell-brand-sub">
-                Application validation and scrutiny
+                {t("common.vedaTagline")}
               </span>
             </div>
 
@@ -128,15 +129,14 @@ export default function Layout() {
               <button
                 type="button"
                 className="veda-shell-icon-btn"
-                title="Notifications"
+                title={t("common.notifications")}
                 onClick={() =>
                   setModalInfo({
-                    title: "Institutional Notifications",
-                    body:
-                      "• Demo EoA 2026-27 validation report generated.\n• Land and infrastructure documents pending review.\n• AICTE Approval Process Handbook (APH 2026-27) norms active.",
+                    title: t("modals.notificationsTitle"),
+                    body: t("modals.notificationsBody"),
                   })
                 }
-                aria-label="View notifications"
+                aria-label={t("common.notifications")}
               >
                 <svg
                   width="18"
@@ -156,10 +156,10 @@ export default function Layout() {
 
               <div className="veda-shell-user-info">
                 <span className="veda-shell-user-name">
-                  {user?.displayName || "Institution User"}
+                  {user?.displayName || t("nav.defaultUser")}
                 </span>
                 <span className="veda-shell-user-role">
-                  {user?.role === "admin" ? "Review Officer" : "Institutional Nodal Officer"}
+                  {user?.role === "admin" ? t("nav.roleAdmin") : t("nav.roleInstitution")}
                 </span>
               </div>
 
@@ -168,7 +168,7 @@ export default function Layout() {
                 className="veda-shell-signout-btn"
                 onClick={logout}
               >
-                Sign out
+                {t("common.signOut")}
               </button>
             </div>
           </div>
@@ -180,15 +180,16 @@ export default function Layout() {
 
       {/* Demonstration Prototype Notice Banner */}
       <div className="veda-shell-prototype-banner" role="status">
-        <strong>Demonstration prototype:</strong> Not an official AICTE or Government of India service. Automated checks are preliminary and require human verification.
+        <strong>{language === "hi" ? "प्रदर्शन प्रोटोटाइप: " : "Demonstration prototype: "}</strong>
+        {t("common.prototypeBanner")}
       </div>
 
       {/* 3. Main Workspace Shell: Sidebar + Content */}
       <div className="veda-shell-body">
         {/* Left Sidebar */}
-        <aside className="veda-shell-sidebar" aria-label="Portal Navigation">
+        <aside className="veda-shell-sidebar" aria-label={t("nav.navigation")}>
           <nav className="veda-sidebar-nav">
-            <div className="veda-sidebar-section-title">Navigation</div>
+            <div className="veda-sidebar-section-title">{t("nav.navigation")}</div>
 
             <NavLink
               to="/dashboard"
@@ -211,7 +212,7 @@ export default function Layout() {
                 <rect x="14" y="14" width="7" height="7" />
                 <rect x="3" y="14" width="7" height="7" />
               </svg>
-              <span>Dashboard</span>
+              <span>{t("nav.dashboard")}</span>
             </NavLink>
 
             <NavLink
@@ -234,7 +235,7 @@ export default function Layout() {
                 <line x1="12" y1="18" x2="12" y2="12" />
                 <line x1="9" y1="15" x2="15" y2="15" />
               </svg>
-              <span>New Application</span>
+              <span>{t("nav.newApplication")}</span>
             </NavLink>
 
             {user?.role === "admin" && (
@@ -255,12 +256,12 @@ export default function Layout() {
                 >
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 </svg>
-                <span>Admin Review</span>
+                <span>{t("nav.adminReview")}</span>
               </NavLink>
             )}
 
             <div className="veda-sidebar-section-title" style={{ marginTop: 12 }}>
-              Resources
+              {t("nav.resources")}
             </div>
 
             <button
@@ -268,9 +269,8 @@ export default function Layout() {
               className="veda-sidebar-link"
               onClick={() =>
                 setModalInfo({
-                  title: "Institutional Document Library",
-                  body:
-                    "Supported document categories for AICTE compliance scrutiny:\n\n1. Previous Extension of Approval (EoA) letter\n2. Land / Building ownership deed & affidavit\n3. Approved building plan & municipal approval\n4. Fire safety NOC from competent state authority\n5. Faculty list with qualification degrees\n6. University affiliation & syllabus confirmation",
+                  title: t("modals.documentsTitle"),
+                  body: t("modals.documentsBody"),
                 })
               }
             >
@@ -285,7 +285,7 @@ export default function Layout() {
               >
                 <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
               </svg>
-              <span>Documents</span>
+              <span>{t("nav.documents")}</span>
             </button>
 
             <button
@@ -293,9 +293,8 @@ export default function Layout() {
               className="veda-sidebar-link"
               onClick={() =>
                 setModalInfo({
-                  title: "Scrutiny & Validation Reports",
-                  body:
-                    "VEDA automated scrutiny reports compile OCR text extraction, regulatory rule matching (APH 2026-27), faculty ratio calculations, and land adequacy flags.\n\nSelect an application in your Recent Applications table to inspect full validation reports.",
+                  title: t("modals.reportsTitle"),
+                  body: t("modals.reportsBody"),
                 })
               }
             >
@@ -312,7 +311,7 @@ export default function Layout() {
                 <line x1="12" y1="20" x2="12" y2="4" />
                 <line x1="6" y1="20" x2="6" y2="14" />
               </svg>
-              <span>Reports</span>
+              <span>{t("nav.reports")}</span>
             </button>
 
             <button
@@ -320,9 +319,8 @@ export default function Layout() {
               className="veda-sidebar-link"
               onClick={() =>
                 setModalInfo({
-                  title: "AICTE Approval Process Guidelines",
-                  body:
-                    "AICTE Approval Process Handbook (APH) Reference:\n\n• Extension of Approval (EoA) Clause 1.4\n• Land and Building Norms: Table 4.1\n• Student-Faculty Ratio: 1:15 for UG Engineering\n• Fire and Structural Safety Certificates mandatory before statutory scrutiny committee meetings.",
+                  title: t("modals.guidelinesTitle"),
+                  body: t("modals.guidelinesBody"),
                 })
               }
             >
@@ -338,7 +336,7 @@ export default function Layout() {
                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
               </svg>
-              <span>Guidelines</span>
+              <span>{t("nav.guidelines")}</span>
             </button>
 
             <button
@@ -346,9 +344,8 @@ export default function Layout() {
               className="veda-sidebar-link"
               onClick={() =>
                 setModalInfo({
-                  title: "Help & Technical Support",
-                  body:
-                    "VEDA Help Desk:\n\n• For prototype assistance: test demo credentials (institute / demo123)\n• For application support: refer to the AICTE National Portal guidelines\n• Scrutiny findings represent automated assistance for committee members.",
+                  title: t("modals.helpTitle"),
+                  body: t("modals.helpBody"),
                 })
               }
             >
@@ -365,14 +362,14 @@ export default function Layout() {
                 <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
                 <line x1="12" y1="17" x2="12.01" y2="17" />
               </svg>
-              <span>Help</span>
+              <span>{t("nav.help")}</span>
             </button>
           </nav>
 
           {/* Demonstration Notice Box at bottom of sidebar */}
           <div className="veda-sidebar-bottom-box">
-            <strong>Demonstration Data</strong>
-            Connected to demo register ({user?.instituteCode || "INST-2024-001"}). All applications are simulated.
+            <strong>{t("nav.demoDataTitle")}</strong>
+            {t("nav.demoDataDesc", { code: user?.instituteCode || "INST-2024-001" })}
           </div>
         </aside>
 
@@ -386,62 +383,56 @@ export default function Layout() {
       <footer className="veda-shell-footer" role="contentinfo">
         <div className="veda-shell-footer-inner">
           <div className="veda-shell-footer-disclaimer">
-            VEDA is a demonstration prototype and is not an official AICTE or Government
-            of India service. Automated checks are preliminary; final decisions rest
-            with authorised human reviewers.
+            {t("common.footerDisclaimer")}
           </div>
-          <nav className="veda-shell-footer-links" aria-label="Portal Policies">
+          <nav className="veda-shell-footer-links" aria-label={t("common.portalPolicies")}>
             <button
               type="button"
               className="veda-shell-footer-link"
               onClick={() =>
                 setModalInfo({
-                  title: "Help & Documentation",
-                  body:
-                    "VEDA provides institutional users with assisted application preparation, checking uploaded certificates and floor plans against AICTE regulatory norms.",
+                  title: t("modals.helpTitle"),
+                  body: t("modals.helpBody"),
                 })
               }
             >
-              Help
+              {t("common.help")}
             </button>
             <button
               type="button"
               className="veda-shell-footer-link"
               onClick={() =>
                 setModalInfo({
-                  title: "Accessibility Standards",
-                  body:
-                    "VEDA complies with GIGW (Guidelines for Indian Government Websites) accessibility guidelines, supporting scalable typography and screen readers.",
+                  title: t("modals.guidelinesTitle"),
+                  body: t("modals.guidelinesBody"),
                 })
               }
             >
-              Accessibility
+              {t("common.guidelines")}
             </button>
             <button
               type="button"
               className="veda-shell-footer-link"
               onClick={() =>
                 setModalInfo({
-                  title: "Privacy Statement",
-                  body:
-                    "In this demonstration prototype, test data and sample PDF documents are processed in local session memory and are not shared externally.",
+                  title: t("modals.privacyTitle"),
+                  body: t("modals.privacyBody"),
                 })
               }
             >
-              Privacy
+              {t("common.privacyPolicy")}
             </button>
             <button
               type="button"
               className="veda-shell-footer-link"
               onClick={() =>
                 setModalInfo({
-                  title: "Disclaimer",
-                  body:
-                    "This system is an AI-assisted scrutiny tool developed for demonstration purposes. Official approvals are issued exclusively by AICTE statutory bodies.",
+                  title: t("landing.limitsTitle"),
+                  body: t("landing.limitsText"),
                 })
               }
             >
-              Disclaimer
+              {t("landing.disclaimer")}
             </button>
           </nav>
         </div>
@@ -471,7 +462,7 @@ export default function Layout() {
               className="veda-modal-close-btn"
               onClick={() => setModalInfo(null)}
             >
-              Close
+              {t("common.close")}
             </button>
           </div>
         </div>

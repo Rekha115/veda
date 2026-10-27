@@ -24,10 +24,18 @@ body,
 }
 
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Inter", "Noto Sans Devanagari", "Segoe UI", "Nirmala UI", -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--text);
   background: var(--gray);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+body.lang-hindi {
+  font-family: "Noto Sans Devanagari", "Inter", "Nirmala UI", "Segoe UI", sans-serif;
+  line-height: 1.55;
+}
+
 
 a {
   color: var(--navy-bright);

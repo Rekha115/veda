@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api, getUser } from "../api";
+import { useLanguage } from "../context/LanguageContext";
 import "./Dashboard.css";
 
 export default function Dashboard() {
   const user = getUser();
+  const { language, t, formatDate, formatCategory } = useLanguage();
   const [apps, setApps] = useState([]);
   const [meta, setMeta] = useState(null);
   const [error, setError] = useState("");
@@ -39,8 +41,8 @@ export default function Dashboard() {
         id: `${a.id}-${idx}`,
         appId: a.id,
         category: a.category,
-        action: auditItem.action || "Status update",
-        actor: auditItem.actor || "System",
+        action: auditItem.action || t("dashboard.statusUpdate", null, "Status update"),
+        actor: auditItem.actor || t("dashboard.systemActor", null, "System"),
         timestamp: auditItem.at || a.createdAt,
       }))
     )
@@ -53,63 +55,38 @@ export default function Dashboard() {
       id: "init-eoa",
       appId: "INST-REG",
       category: "EOA",
-      action: `Previous EoA status verified: ${meta.institution.previousEoaStatus}`,
-      actor: "Institutional Register",
+      action: t("dashboard.initEoaAction", {
+        status: meta.institution.previousEoaStatus || (language === "hi" ? "स्वीकृत" : "Approved"),
+      }),
+      actor: language === "hi" ? "संस्थागत रजिस्टर" : "Institutional Register",
       timestamp: new Date().toISOString(),
     });
-  }
-
-  function formatCategory(cat) {
-    switch (cat) {
-      case "EOA":
-        return "Extension of Approval (EoA)";
-      case "NEW_COURSE":
-        return "New Programme / Course Addition";
-      case "INTAKE_INCREASE":
-        return "Intake Capacity Increase";
-      default:
-        return cat || "General Scrutiny";
-    }
-  }
-
-  function formatDate(isoStr) {
-    if (!isoStr) return "—";
-    try {
-      const d = new Date(isoStr);
-      return d.toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      });
-    } catch {
-      return isoStr;
-    }
   }
 
   function getStatusBadge(app) {
     const decision = app.review?.decision;
     if (decision === "approved" || app.status === "approved") {
-      return <span className="veda-status-badge approved">Approved</span>;
+      return <span className="veda-status-badge approved">{t("common.approved")}</span>;
     }
     if (decision === "rejected" || app.status === "rejected") {
-      return <span className="veda-status-badge rejected">Rejected</span>;
+      return <span className="veda-status-badge rejected">{t("common.rejected")}</span>;
     }
     if (app.status === "validated") {
-      return <span className="veda-status-badge review">Under Review</span>;
+      return <span className="veda-status-badge review">{t("common.underReview")}</span>;
     }
     if (app.status === "draft") {
-      return <span className="veda-status-badge draft">Draft Submission</span>;
+      return <span className="veda-status-badge draft">{t("common.draft")}</span>;
     }
-    return <span className="veda-status-badge review">Under Review</span>;
+    return <span className="veda-status-badge review">{t("common.underReview")}</span>;
   }
 
   return (
     <div className="veda-dashboard-workspace">
       {/* 1. Breadcrumb */}
-      <nav className="veda-breadcrumb" aria-label="Breadcrumb">
-        <Link to="/dashboard" className="veda-breadcrumb-link">Home</Link>
+      <nav className="veda-breadcrumb" aria-label={t("nav.navigation")}>
+        <Link to="/dashboard" className="veda-breadcrumb-link">{t("common.home")}</Link>
         <span className="veda-breadcrumb-sep">/</span>
-        <span className="veda-breadcrumb-current">Dashboard</span>
+        <span className="veda-breadcrumb-current">{t("nav.dashboard")}</span>
       </nav>
 
       {error && (
@@ -123,42 +100,43 @@ export default function Dashboard() {
             marginBottom: "16px",
             fontSize: "0.85rem",
           }}
+          role="alert"
         >
           {error}
         </div>
       )}
 
       {/* 2. Welcome & Institutional Profile Header Card */}
-      <section className="veda-welcome-card" aria-label="Institution Overview">
+      <section className="veda-welcome-card" aria-label={t("dashboard.welcome", { name: user?.displayName || t("dashboard.defaultUser") })}>
         <div className="veda-welcome-details">
           <h1 className="veda-welcome-title">
-            Welcome, {user?.displayName || "Dr. Meera Sharma"}
+            {t("dashboard.welcome", { name: user?.displayName || t("dashboard.defaultUser") })}
           </h1>
 
           <div className="veda-inst-info-row">
             <span className="veda-inst-name">
-              {meta?.institution?.name || "Bharat Institute of Technology"}
+              {meta?.institution?.name || t("dashboard.defaultInst")}
             </span>
             <span className="veda-inst-code">
-              {meta?.institution?.code || "INST-2024-001"}
+              {meta?.institution?.code || t("dashboard.defaultCode")}
             </span>
             <span className="veda-inst-tag">
-              {meta?.institution?.source || "DEMO institutional register"}
+              {meta?.institution?.source || t("dashboard.defaultSource")}
             </span>
           </div>
 
           <div className="veda-inst-meta-grid">
             <span className="veda-inst-meta-item">
-              Location: <strong>{meta?.institution?.district || "Jaipur"}, {meta?.institution?.state || "Rajasthan"}</strong>
+              {t("dashboard.location")}: <strong>{meta?.institution?.district || t("dashboard.defaultDistrict")}, {meta?.institution?.state || t("dashboard.defaultState")}</strong>
             </span>
             <span className="veda-inst-meta-item">
-              Previous EoA ({meta?.institution?.previousEoaYear || "2024-25"}): <strong>{meta?.institution?.previousEoaStatus || "Approved"}</strong>
+              {t("dashboard.previousEoa", { year: meta?.institution?.previousEoaYear || "2024-25" })}: <strong>{meta?.institution?.previousEoaStatus || (language === "hi" ? "स्वीकृत" : "Approved")}</strong>
             </span>
             <span className="veda-inst-meta-item">
-              Faculty on Register: <strong>{meta?.institution?.facultyCount || 42}</strong>
+              {t("dashboard.facultyOnRegister")}: <strong>{meta?.institution?.facultyCount || 42}</strong>
             </span>
             <span className="veda-inst-meta-item">
-              TER Status: <strong>{meta?.institution?.terPaymentStatus || "Paid (demo)"}</strong>
+              {t("dashboard.terStatus")}: <strong>{meta?.institution?.terPaymentStatus || t("dashboard.terPaid")}</strong>
             </span>
           </div>
         </div>
@@ -178,7 +156,7 @@ export default function Dashboard() {
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" />
             </svg>
-            <span>Create New Application</span>
+            <span>{t("dashboard.createNewApp")}</span>
           </Link>
 
           {user?.role === "admin" && (
@@ -195,20 +173,20 @@ export default function Dashboard() {
               >
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               </svg>
-              <span>Admin Review</span>
+              <span>{t("dashboard.adminReviewBtn")}</span>
             </Link>
           )}
         </div>
       </section>
 
       {/* 3. Summary Statistic Cards (Row of 4) */}
-      <section className="veda-stats-grid" aria-label="Application Summary Metrics">
+      <section className="veda-stats-grid" aria-label={t("dashboard.totalApplications")}>
         {/* Total Applications */}
         <div className="veda-stat-card total">
           <div className="veda-stat-info">
             <span className="veda-stat-value">{totalApps}</span>
-            <span className="veda-stat-label">Total Applications</span>
-            <span className="veda-stat-subtext">All academic year submissions</span>
+            <span className="veda-stat-label">{t("dashboard.totalApplications")}</span>
+            <span className="veda-stat-subtext">{t("dashboard.totalSubtext")}</span>
           </div>
           <div className="veda-stat-icon-wrapper" aria-hidden="true">
             <svg
@@ -234,8 +212,8 @@ export default function Dashboard() {
         <div className="veda-stat-card review">
           <div className="veda-stat-info">
             <span className="veda-stat-value">{underReviewCount}</span>
-            <span className="veda-stat-label">Under Review</span>
-            <span className="veda-stat-subtext">Pending committee scrutiny</span>
+            <span className="veda-stat-label">{t("dashboard.underReview")}</span>
+            <span className="veda-stat-subtext">{t("dashboard.reviewSubtext")}</span>
           </div>
           <div className="veda-stat-icon-wrapper" aria-hidden="true">
             <svg
@@ -258,8 +236,8 @@ export default function Dashboard() {
         <div className="veda-stat-card approved">
           <div className="veda-stat-info">
             <span className="veda-stat-value">{approvedCount}</span>
-            <span className="veda-stat-label">Approved</span>
-            <span className="veda-stat-subtext">Statutory sanction issued</span>
+            <span className="veda-stat-label">{t("dashboard.approved")}</span>
+            <span className="veda-stat-subtext">{t("dashboard.approvedSubtext")}</span>
           </div>
           <div className="veda-stat-icon-wrapper" aria-hidden="true">
             <svg
@@ -282,8 +260,8 @@ export default function Dashboard() {
         <div className="veda-stat-card rejected">
           <div className="veda-stat-info">
             <span className="veda-stat-value">{rejectedCount}</span>
-            <span className="veda-stat-label">Rejected</span>
-            <span className="veda-stat-subtext">Deficiencies or non-compliance</span>
+            <span className="veda-stat-label">{t("dashboard.rejected")}</span>
+            <span className="veda-stat-subtext">{t("dashboard.rejectedSubtext")}</span>
           </div>
           <div className="veda-stat-icon-wrapper" aria-hidden="true">
             <svg
@@ -307,14 +285,14 @@ export default function Dashboard() {
       {/* 4. Main Content Two-Column Grid */}
       <div className="veda-dashboard-content-grid">
         {/* Left Column: Recent Applications Table */}
-        <section className="veda-panel-card" aria-label="Recent Applications">
+        <section className="veda-panel-card" aria-label={t("dashboard.recentApplications")}>
           <div className="veda-panel-header">
             <div className="veda-panel-title-group">
-              <h2 className="veda-panel-title">Recent Applications</h2>
-              <span className="veda-pill-badge">Sample data</span>
+              <h2 className="veda-panel-title">{t("dashboard.recentApplications")}</h2>
+              <span className="veda-pill-badge">{t("common.sampleData")}</span>
             </div>
             <Link to="/applications/new" className="veda-panel-link">
-              + New Application
+              {t("dashboard.newAppBtn")}
             </Link>
           </div>
 
@@ -322,11 +300,11 @@ export default function Dashboard() {
             <table className="veda-custom-table">
               <thead>
                 <tr>
-                  <th>Reference No.</th>
-                  <th>Application Type</th>
-                  <th>Submitted</th>
-                  <th>Status</th>
-                  <th>Action</th>
+                  <th>{t("dashboard.refNo")}</th>
+                  <th>{t("dashboard.appType")}</th>
+                  <th>{t("dashboard.submitted")}</th>
+                  <th>{t("dashboard.status")}</th>
+                  <th>{t("dashboard.action")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -351,16 +329,16 @@ export default function Dashboard() {
                         <Link
                           to={`/applications/${a.id}/results`}
                           className="veda-btn-view-action"
-                          title="View validation scrutiny results"
+                          title={t("dashboard.view")}
                         >
-                          View
+                          {t("dashboard.view")}
                         </Link>
                         <Link
                           to={`/applications/${a.id}/upload`}
                           className="veda-btn-sub-link"
-                          title="Upload or check compliance documents"
+                          title={t("dashboard.documents")}
                         >
-                          Documents
+                          {t("dashboard.documents")}
                         </Link>
                       </div>
                     </td>
@@ -370,7 +348,7 @@ export default function Dashboard() {
                 {apps.length === 0 && (
                   <tr>
                     <td colSpan="5" style={{ textAlign: "center", padding: "32px", color: "#64748b" }}>
-                      No applications recorded yet. Click <strong>Create New Application</strong> above to start.
+                      {t("dashboard.noApplications")}
                     </td>
                   </tr>
                 )}
@@ -380,13 +358,13 @@ export default function Dashboard() {
         </section>
 
         {/* Right Column: Recent Activity Panel */}
-        <section className="veda-panel-card" aria-label="Recent Activity">
+        <section className="veda-panel-card" aria-label={t("dashboard.recentActivity")}>
           <div className="veda-panel-header">
             <div className="veda-panel-title-group">
-              <h2 className="veda-panel-title">Recent Activity</h2>
+              <h2 className="veda-panel-title">{t("dashboard.recentActivity")}</h2>
             </div>
             <span style={{ fontSize: "0.76rem", color: "#94a3b8" }}>
-              Live Log
+              {t("dashboard.liveLog")}
             </span>
           </div>
 
@@ -421,7 +399,7 @@ export default function Dashboard() {
 
             {activityList.length === 0 && (
               <div style={{ padding: "24px 12px", color: "#64748b", textAlign: "center", fontSize: "0.82rem" }}>
-                No recent activity recorded.
+                {t("dashboard.noActivity")}
               </div>
             )}
           </div>

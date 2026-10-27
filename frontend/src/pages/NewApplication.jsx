@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api";
+import { useLanguage } from "../context/LanguageContext";
 import "./NewApplication.css";
 
 export default function NewApplication() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [form, setForm] = useState({
     instituteName: "Bharat Institute of Technology",
     category: "EOA",
@@ -43,20 +45,19 @@ export default function NewApplication() {
   return (
     <div className="veda-form-page-container">
       {/* Breadcrumbs */}
-      <nav className="veda-breadcrumb" aria-label="Breadcrumb" style={{ marginBottom: 16 }}>
-        <Link to="/dashboard" className="veda-breadcrumb-link">Home</Link>
+      <nav className="veda-breadcrumb" aria-label={t("nav.navigation")} style={{ marginBottom: 16 }}>
+        <Link to="/dashboard" className="veda-breadcrumb-link">{t("common.home")}</Link>
         <span className="veda-breadcrumb-sep">/</span>
-        <Link to="/dashboard" className="veda-breadcrumb-link">Applications</Link>
+        <Link to="/dashboard" className="veda-breadcrumb-link">{t("newApp.breadcrumbApplications")}</Link>
         <span className="veda-breadcrumb-sep">/</span>
-        <span className="veda-breadcrumb-current">New Application</span>
+        <span className="veda-breadcrumb-current">{t("newApp.breadcrumbCurrent")}</span>
       </nav>
 
       {/* Page Header */}
       <div className="veda-page-header-block">
-        <h1 className="veda-page-main-title">New Approval Application</h1>
+        <h1 className="veda-page-main-title">{t("newApp.title")}</h1>
         <p className="veda-page-lead-desc">
-          File details for Extension of Approval (EoA), New Course, or Intake Increase.
-          Default values include test parameters to verify automated regulatory scrutiny checks.
+          {t("newApp.leadDesc")}
         </p>
       </div>
 
@@ -82,13 +83,13 @@ export default function NewApplication() {
         <div className="veda-form-section">
           <h2 className="veda-section-heading">
             <span className="veda-section-heading-icon" aria-hidden="true">🏛️</span>
-            <span>1. Institutional & Application Details</span>
+            <span>{t("newApp.sec1Title")}</span>
           </h2>
 
           <div className="veda-form-grid-2">
             <div className="veda-field-group">
               <label htmlFor="instituteName" className="veda-field-label">
-                Institute name <span className="veda-field-label-req">*</span>
+                {t("newApp.instituteName")} <span className="veda-field-label-req">*</span>
               </label>
               <input
                 id="instituteName"
@@ -97,12 +98,12 @@ export default function NewApplication() {
                 onChange={(e) => set("instituteName", e.target.value)}
                 required
               />
-              <span className="veda-field-hint">Must match institutional records</span>
+              <span className="veda-field-hint">{t("newApp.instituteNameHint")}</span>
             </div>
 
             <div className="veda-field-group">
               <label htmlFor="category" className="veda-field-label">
-                Application category <span className="veda-field-label-req">*</span>
+                {t("newApp.category")} <span className="veda-field-label-req">*</span>
               </label>
               <select
                 id="category"
@@ -110,22 +111,22 @@ export default function NewApplication() {
                 value={form.category}
                 onChange={(e) => set("category", e.target.value)}
               >
-                <option value="EOA">Extension of Approval (EoA)</option>
-                <option value="NEW_COURSE">New Course / Programme Addition</option>
-                <option value="INTAKE_INCREASE">Intake Capacity Increase</option>
+                <option value="EOA">{t("common.categories.EOA")}</option>
+                <option value="NEW_COURSE">{t("common.categories.NEW_COURSE")}</option>
+                <option value="INTAKE_INCREASE">{t("common.categories.INTAKE_INCREASE")}</option>
               </select>
             </div>
 
             <div className="veda-field-group">
               <label htmlFor="academicYear" className="veda-field-label">
-                Academic year <span className="veda-field-label-req">*</span>
+                {t("newApp.academicYear")} <span className="veda-field-label-req">*</span>
               </label>
               <input
                 id="academicYear"
                 className="veda-field-input"
                 value={form.academicYear}
                 onChange={(e) => set("academicYear", e.target.value)}
-                placeholder="2026-27"
+                placeholder={t("newApp.academicYearPlaceholder")}
                 required
               />
             </div>
@@ -136,13 +137,13 @@ export default function NewApplication() {
         <div className="veda-form-section">
           <h2 className="veda-section-heading">
             <span className="veda-section-heading-icon" aria-hidden="true">👤</span>
-            <span>2. Authorized Nodal Officer Contact</span>
+            <span>{t("newApp.sec2Title")}</span>
           </h2>
 
           <div className="veda-form-grid-2">
             <div className="veda-field-group">
               <label htmlFor="contactName" className="veda-field-label">
-                Contact officer name <span className="veda-field-label-req">*</span>
+                {t("newApp.contactName")} <span className="veda-field-label-req">*</span>
               </label>
               <input
                 id="contactName"
@@ -155,7 +156,7 @@ export default function NewApplication() {
 
             <div className="veda-field-group">
               <label htmlFor="contactEmail" className="veda-field-label">
-                Official contact email <span className="veda-field-label-req">*</span>
+                {t("newApp.contactEmail")} <span className="veda-field-label-req">*</span>
               </label>
               <input
                 id="contactEmail"
@@ -173,13 +174,13 @@ export default function NewApplication() {
         <div className="veda-form-section">
           <h2 className="veda-section-heading">
             <span className="veda-section-heading-icon" aria-hidden="true">📊</span>
-            <span>3. Claimed Institutional Capacity & Faculty Metrics</span>
+            <span>{t("newApp.sec3Title")}</span>
           </h2>
 
           <div className="veda-form-grid-3">
             <div className="veda-field-group">
               <label htmlFor="claimedFacultyCount" className="veda-field-label">
-                Claimed faculty count <span className="veda-field-label-req">*</span>
+                {t("newApp.claimedFacultyCount")} <span className="veda-field-label-req">*</span>
               </label>
               <input
                 id="claimedFacultyCount"
@@ -189,12 +190,12 @@ export default function NewApplication() {
                 onChange={(e) => set("claimedFacultyCount", e.target.value)}
                 required
               />
-              <span className="veda-field-hint">Validated against faculty list OCR</span>
+              <span className="veda-field-hint">{t("newApp.claimedFacultyHint")}</span>
             </div>
 
             <div className="veda-field-group">
               <label htmlFor="claimedIntakeCse" className="veda-field-label">
-                Claimed CSE intake <span className="veda-field-label-req">*</span>
+                {t("newApp.claimedIntakeCse")} <span className="veda-field-label-req">*</span>
               </label>
               <input
                 id="claimedIntakeCse"
@@ -208,7 +209,7 @@ export default function NewApplication() {
 
             <div className="veda-field-group">
               <label htmlFor="claimedIntakeEce" className="veda-field-label">
-                Claimed ECE intake <span className="veda-field-label-req">*</span>
+                {t("newApp.claimedIntakeEce")} <span className="veda-field-label-req">*</span>
               </label>
               <input
                 id="claimedIntakeEce"
@@ -226,7 +227,7 @@ export default function NewApplication() {
         <div className="veda-form-section">
           <h2 className="veda-section-heading">
             <span className="veda-section-heading-icon" aria-hidden="true">📜</span>
-            <span>4. Accreditation & Statutory Declarations</span>
+            <span>{t("newApp.sec4Title")}</span>
           </h2>
 
           <div className="veda-declaration-box">
@@ -238,7 +239,7 @@ export default function NewApplication() {
               onChange={(e) => set("claimsNba", e.target.checked)}
             />
             <label htmlFor="claimsNba" className="veda-declaration-text">
-              <strong>Claim NBA Accreditation:</strong> Check this option if your institution holds active National Board of Accreditation (NBA) certification. (Note: Demo institutional register lists NBA accreditation as unverified, allowing you to test regulatory mismatch detection).
+              <strong>{t("newApp.nbaCheckboxTitle")}:</strong> {t("newApp.nbaCheckboxDesc")}
             </label>
           </div>
         </div>
@@ -246,10 +247,10 @@ export default function NewApplication() {
         {/* Action Buttons */}
         <div className="veda-form-actions-bar">
           <Link to="/dashboard" className="veda-btn-cancel">
-            Cancel
+            {t("common.cancel")}
           </Link>
           <button className="veda-btn-submit-primary" type="submit" disabled={busy}>
-            {busy ? "Saving Application…" : "Save and Proceed to Document Upload →"}
+            {busy ? t("newApp.saving") : t("newApp.saveAndProceed")}
           </button>
         </div>
       </form>

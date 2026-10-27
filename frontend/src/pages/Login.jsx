@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api, setSession } from "../api";
+import { useLanguage } from "../context/LanguageContext";
 import aicteLogo from "../assets/aicte-logo.png";
 import "./Login.css";
 
 export default function Login() {
   const navigate = useNavigate();
+  const { language, setLanguage, t } = useLanguage();
 
   // Role and credentials
   const [role, setRole] = useState("institution"); // "institution" | "admin"
@@ -16,9 +18,8 @@ export default function Login() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
-  // Accessibility & language state
+  // Accessibility font scaling
   const [fontSizeScale, setFontSizeScale] = useState(1); // 0.92, 1, 1.08
-  const [language, setLanguage] = useState("en"); // "en" | "hi"
 
   // Informational modals for auxiliary actions
   const [modalInfo, setModalInfo] = useState(null);
@@ -47,11 +48,13 @@ export default function Login() {
       setSession(data.token, data.user);
       navigate(data.user.role === "admin" ? "/admin" : "/dashboard");
     } catch (err) {
-      setError(err.message || "Invalid credentials. Please verify your username and password.");
+      setError(err.message || t("login.invalidCredentials"));
     } finally {
       setBusy(false);
     }
   }
+
+  const featuresList = t("login.features");
 
   return (
     <div
@@ -59,21 +62,21 @@ export default function Login() {
       style={{ fontSize: `${fontSizeScale * 100}%` }}
     >
       {/* 1. Slim Top Utility Bar */}
-      <section className="veda-top-utility-bar" aria-label="National Portal Utilities">
+      <section className="veda-top-utility-bar" aria-label={t("common.govIndia")}>
         <div className="veda-top-utility-inner">
           <div className="veda-utility-left">
-            Government of India &nbsp;|&nbsp; Ministry of Education
+            {t("common.govIndia")}
           </div>
           <div className="veda-utility-right">
             <a href="#login-main-card" className="veda-skip-link">
-              Skip to main content
+              {t("common.skipToContent")}
             </a>
-            <div className="veda-font-controls" aria-label="Font size controls">
+            <div className="veda-font-controls" aria-label={t("common.fontSizeControls")}>
               <button
                 type="button"
                 className={`veda-font-btn ${fontSizeScale === 0.92 ? "active" : ""}`}
                 onClick={() => setFontSizeScale(0.92)}
-                title="Decrease font size"
+                title={t("common.decreaseFont")}
               >
                 A-
               </button>
@@ -81,7 +84,7 @@ export default function Login() {
                 type="button"
                 className={`veda-font-btn ${fontSizeScale === 1 ? "active" : ""}`}
                 onClick={() => setFontSizeScale(1)}
-                title="Default font size"
+                title={t("common.defaultFont")}
               >
                 A
               </button>
@@ -89,18 +92,18 @@ export default function Login() {
                 type="button"
                 className={`veda-font-btn ${fontSizeScale === 1.08 ? "active" : ""}`}
                 onClick={() => setFontSizeScale(1.08)}
-                title="Increase font size"
+                title={t("common.increaseFont")}
               >
                 A+
               </button>
             </div>
-            <div className="veda-lang-switch" aria-label="Language options">
+            <div className="veda-lang-switch" aria-label={t("common.switchLanguageAria")}>
               <button
                 type="button"
                 className={`veda-lang-btn ${language === "en" ? "active" : ""}`}
                 onClick={() => setLanguage("en")}
               >
-                English
+                {t("common.languageNameEn")}
               </button>
               <span className="veda-lang-divider">|</span>
               <button
@@ -108,7 +111,7 @@ export default function Login() {
                 className={`veda-lang-btn ${language === "hi" ? "active" : ""}`}
                 onClick={() => setLanguage("hi")}
               >
-                हिंदी
+                {t("common.languageNameHi")}
               </button>
             </div>
           </div>
@@ -121,27 +124,27 @@ export default function Login() {
           <div className="veda-header-left">
             <img
               src={aicteLogo}
-              alt="Official AICTE Emblem"
+              alt={t("common.aicteCouncil")}
               className="veda-aicte-logo"
             />
             <div className="veda-aicte-text">
               <h1 className="veda-aicte-title">
-                All India Council for Technical Education
+                {t("common.aicteCouncil")}
               </h1>
               <span className="veda-aicte-hindi">
-                अखिल भारतीय तकनीकी शिक्षा परिषद
+                {t("common.aicteHindi")}
               </span>
               <span className="veda-aicte-sub">
-                Ministry of Education, Government of India
+                {t("common.ministryOfEducation")}
               </span>
             </div>
           </div>
 
           <div className="veda-header-right">
-            <span className="veda-brand-wordmark">VEDA</span>
+            <span className="veda-brand-wordmark">{t("common.vedaWordmark")}</span>
             <div className="veda-brand-divider" aria-hidden="true" />
             <span className="veda-brand-subtitle">
-              Application validation and document scrutiny platform
+              {t("common.vedaTaglineLong")}
             </span>
           </div>
         </div>
@@ -153,55 +156,28 @@ export default function Login() {
       {/* 3. Main Hero Two-Column Section */}
       <main className="veda-main-hero" id="main-content">
         {/* Left Panel - Orange */}
-        <section className="veda-left-panel" aria-label="VEDA Information">
+        <section className="veda-left-panel" aria-label={t("login.heroTitle")}>
           <div className="veda-left-content">
-            <h2 className="veda-hero-title">VEDA</h2>
+            <h2 className="veda-hero-title">{t("login.heroTitle")}</h2>
             <h3 className="veda-hero-tagline">
-              AI-Powered Application Validation, Document Authentication and Regulatory Compliance Assistance
+              {t("login.heroTagline")}
             </h3>
             <p className="veda-hero-desc">
-              VEDA helps institutions prepare AICTE approval-related applications, including
-              Extension of Approval (EoA) and other applicable changes. It assists authorised
-              reviewers by analysing application information and supporting documents, checking
-              them against available institutional records and configurable regulatory
-              requirements, and generating evidence-based validation reports.
+              {t("login.heroDesc")}
             </p>
 
             <ul className="veda-features-list">
-              <li className="veda-feature-item">
-                <span className="veda-check-icon" aria-hidden="true">✓</span>
-                <span>Processes digital and scanned PDFs, JPG and PNG documents using OCR.</span>
-              </li>
-              <li className="veda-feature-item">
-                <span className="veda-check-icon" aria-hidden="true">✓</span>
-                <span>Identifies missing information, incomplete or expired documents, and mismatched details.</span>
-              </li>
-              <li className="veda-feature-item">
-                <span className="veda-check-icon" aria-hidden="true">✓</span>
-                <span>Checks application information against available authorised institutional records and configurable compliance rules.</span>
-              </li>
-              <li className="veda-feature-item">
-                <span className="veda-check-icon" aria-hidden="true">✓</span>
-                <span>Flags potential document alterations, duplicates and anomalies for further verification.</span>
-              </li>
-              <li className="veda-feature-item">
-                <span className="veda-check-icon" aria-hidden="true">✓</span>
-                <span>Supports document verification through authorised issuing-authority sources wherever available.</span>
-              </li>
-              <li className="veda-feature-item">
-                <span className="veda-check-icon" aria-hidden="true">✓</span>
-                <span>Assists in reviewing infrastructure evidence and identifying cases requiring additional evidence or physical inspection.</span>
-              </li>
-              <li className="veda-feature-item">
-                <span className="veda-check-icon" aria-hidden="true">✓</span>
-                <span>Provides application-wise validation status, verification results, alerts and an auditable record of findings.</span>
-              </li>
+              {Array.isArray(featuresList) &&
+                featuresList.map((feature, idx) => (
+                  <li key={idx} className="veda-feature-item">
+                    <span className="veda-check-icon" aria-hidden="true">✓</span>
+                    <span>{feature}</span>
+                  </li>
+                ))}
             </ul>
 
             <div className="veda-left-disclaimer" role="note">
-              All automated findings are preliminary and advisory. Statutory scrutiny,
-              inspections where required, and final regulatory decisions remain with the
-              competent AICTE authorities.
+              {t("login.advisoryNote")}
             </div>
           </div>
 
@@ -212,73 +188,70 @@ export default function Login() {
               className="veda-building-svg"
               xmlns="http://www.w3.org/2000/svg"
             >
-              {/* Ground plinth lines */}
               <line x1="20" y1="200" x2="580" y2="200" stroke="#111" strokeWidth="1.6" />
               <line x1="50" y1="204" x2="550" y2="204" stroke="#111" strokeWidth="1.2" />
 
-              {/* Left outer wing */}
               <rect x="70" y="155" width="45" height="45" fill="none" stroke="#111" strokeWidth="1.6" />
               <line x1="65" y1="155" x2="120" y2="155" stroke="#111" strokeWidth="1.6" />
 
-              {/* Left main wing */}
               <rect x="115" y="130" width="75" height="70" fill="none" stroke="#111" strokeWidth="1.6" />
               <line x1="110" y1="130" x2="195" y2="130" stroke="#111" strokeWidth="2" />
               <rect x="130" y="146" width="18" height="18" fill="none" stroke="#111" strokeWidth="1.5" />
               <rect x="157" y="146" width="18" height="18" fill="none" stroke="#111" strokeWidth="1.5" />
 
-              {/* Right main wing */}
               <rect x="410" y="130" width="75" height="70" fill="none" stroke="#111" strokeWidth="1.6" />
               <line x1="405" y1="130" x2="490" y2="130" stroke="#111" strokeWidth="2" />
               <rect x="425" y="146" width="18" height="18" fill="none" stroke="#111" strokeWidth="1.5" />
               <rect x="452" y="146" width="18" height="18" fill="none" stroke="#111" strokeWidth="1.5" />
 
-              {/* Right outer wing */}
               <rect x="485" y="155" width="45" height="45" fill="none" stroke="#111" strokeWidth="1.6" />
               <line x1="480" y1="155" x2="535" y2="155" stroke="#111" strokeWidth="1.6" />
 
-              {/* Central plinth stepped foundation */}
               <line x1="180" y1="196" x2="420" y2="196" stroke="#111" strokeWidth="1.6" />
               <line x1="186" y1="192" x2="414" y2="192" stroke="#111" strokeWidth="1.6" />
 
-              {/* Main colonnade back wall */}
               <rect x="190" y="105" width="220" height="87" fill="none" stroke="#111" strokeWidth="1.6" />
-
-              {/* Entablature beam */}
               <rect x="180" y="98" width="240" height="7" fill="none" stroke="#111" strokeWidth="1.6" />
-
-              {/* Triangular Classical Pediment */}
               <polygon points="300,42 175,98 425,98" fill="none" stroke="#111" strokeWidth="2" />
-              <line x1="195" y1="94" x2="405" y2="94" stroke="#111" strokeWidth="1" />
+              <polygon points="300,56 195,95 405,95" fill="none" stroke="#111" strokeWidth="1.2" />
 
-              {/* Flagpole & Mast */}
-              <line x1="300" y1="42" x2="300" y2="18" stroke="#111" strokeWidth="2" />
-              <rect x="300" y="20" width="22" height="13" fill="#111" />
+              <circle cx="300" cy="78" r="9" fill="none" stroke="#111" strokeWidth="1.4" />
+              <circle cx="300" cy="78" r="4.5" fill="none" stroke="#111" strokeWidth="1" />
 
-              {/* 4 Architectural Columns */}
-              <rect x="208" y="105" width="6" height="87" fill="none" stroke="#111" strokeWidth="1.4" />
-              <rect x="255" y="105" width="6" height="87" fill="none" stroke="#111" strokeWidth="1.4" />
-              <rect x="339" y="105" width="6" height="87" fill="none" stroke="#111" strokeWidth="1.4" />
-              <rect x="386" y="105" width="6" height="87" fill="none" stroke="#111" strokeWidth="1.4" />
+              <line x1="210" y1="105" x2="210" y2="192" stroke="#111" strokeWidth="2" />
+              <line x1="235" y1="105" x2="235" y2="192" stroke="#111" strokeWidth="2" />
+              <line x1="260" y1="105" x2="260" y2="192" stroke="#111" strokeWidth="2" />
+              <line x1="340" y1="105" x2="340" y2="192" stroke="#111" strokeWidth="2" />
+              <line x1="365" y1="105" x2="365" y2="192" stroke="#111" strokeWidth="2" />
+              <line x1="390" y1="105" x2="390" y2="192" stroke="#111" strokeWidth="2" />
 
-              {/* Central Grand Doorway */}
-              <rect x="282" y="142" width="36" height="50" fill="none" stroke="#111" strokeWidth="1.6" />
-              <line x1="300" y1="142" x2="300" y2="192" stroke="#111" strokeWidth="1.2" />
+              <path d="M 285 192 A 15 15 0 0 1 315 192 Z" fill="none" stroke="#111" strokeWidth="1.8" />
+              <line x1="300" y1="177" x2="300" y2="192" stroke="#111" strokeWidth="1.2" />
+
+              <rect x="204" y="188" width="12" height="4" fill="none" stroke="#111" strokeWidth="1.2" />
+              <rect x="229" y="188" width="12" height="4" fill="none" stroke="#111" strokeWidth="1.2" />
+              <rect x="254" y="188" width="12" height="4" fill="none" stroke="#111" strokeWidth="1.2" />
+              <rect x="334" y="188" width="12" height="4" fill="none" stroke="#111" strokeWidth="1.2" />
+              <rect x="359" y="188" width="12" height="4" fill="none" stroke="#111" strokeWidth="1.2" />
+              <rect x="384" y="188" width="12" height="4" fill="none" stroke="#111" strokeWidth="1.2" />
+
+              <line x1="290" y1="42" x2="310" y2="42" stroke="#111" strokeWidth="1.6" />
+              <line x1="300" y1="42" x2="300" y2="28" stroke="#111" strokeWidth="1.8" />
+              <polygon points="300,28 318,34 300,40" fill="none" stroke="#111" strokeWidth="1.2" />
             </svg>
           </div>
         </section>
 
-        {/* Right Panel - Cool Grey */}
-        <section className="veda-right-panel" aria-label="Sign In Section">
-          <div className="veda-login-container">
-            {/* White Login Card */}
-            <div className="veda-card" id="login-main-card">
-              <h2 className="veda-card-heading">Sign in to VEDA</h2>
-              <p className="veda-card-subtext">
-                Use the credentials issued to your institution or review office.
-              </p>
+        {/* Right Panel - Grey background with white Login Card */}
+        <section className="veda-right-panel" aria-label={t("login.portalHeading")}>
+          <div className="veda-card-wrapper" id="login-main-card">
+            <div className="veda-login-card">
+              <h2 className="veda-card-heading">
+                {t("login.portalHeading")}
+              </h2>
 
               {/* Role Selector */}
-              <div className="veda-role-selector" role="tablist" aria-label="User Role Selection">
+              <div className="veda-role-selector" role="tablist" aria-label={t("login.portalHeading")}>
                 <button
                   type="button"
                   role="tab"
@@ -286,7 +259,7 @@ export default function Login() {
                   className={`veda-role-tab ${role === "institution" ? "active" : ""}`}
                   onClick={() => handleRoleChange("institution")}
                 >
-                  Institution User
+                  {t("login.roleInstitution")}
                 </button>
                 <button
                   type="button"
@@ -295,7 +268,7 @@ export default function Login() {
                   className={`veda-role-tab ${role === "admin" ? "active" : ""}`}
                   onClick={() => handleRoleChange("admin")}
                 >
-                  Admin / Reviewer
+                  {t("login.roleAdmin")}
                 </button>
               </div>
 
@@ -309,7 +282,7 @@ export default function Login() {
 
                 <div className="veda-form-group">
                   <label htmlFor="username" className="veda-form-label">
-                    Email or username
+                    {t("login.emailOrUsername")}
                   </label>
                   <input
                     id="username"
@@ -321,8 +294,8 @@ export default function Login() {
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder={
                       role === "institution"
-                        ? "name@institution.edu.in"
-                        : "admin"
+                        ? t("login.emailPlaceholderInst")
+                        : t("login.emailPlaceholderAdmin")
                     }
                     required
                   />
@@ -330,7 +303,7 @@ export default function Login() {
 
                 <div className="veda-form-group">
                   <label htmlFor="password" className="veda-form-label">
-                    Password
+                    {t("login.password")}
                   </label>
                   <div className="veda-password-wrapper">
                     <input
@@ -341,16 +314,16 @@ export default function Login() {
                       className="veda-input-text"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter your password"
+                      placeholder={t("login.passwordPlaceholder")}
                       required
                     />
                     <button
                       type="button"
                       className="veda-show-hide-btn"
                       onClick={() => setShowPassword(!showPassword)}
-                      aria-label={showPassword ? "Hide password" : "Show password"}
+                      aria-label={showPassword ? t("login.hide") : t("login.show")}
                     >
-                      {showPassword ? "Hide" : "Show"}
+                      {showPassword ? t("login.hide") : t("login.show")}
                     </button>
                   </div>
                 </div>
@@ -362,7 +335,7 @@ export default function Login() {
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
                     />
-                    Remember me on this device
+                    {t("login.rememberMe")}
                   </label>
 
                   <button
@@ -370,13 +343,12 @@ export default function Login() {
                     className="veda-link-inline"
                     onClick={() =>
                       setModalInfo({
-                        title: "Password Assistance",
-                        body:
-                          "In this demonstration prototype, demo credentials are pre-configured:\n\n• Institution: username 'institute', password 'demo123'\n• Admin / Reviewer: username 'admin', password 'demo123'\n\nIn a production environment, password resets are processed via registered institutional nodal email or the AICTE National Helpdesk.",
+                        title: t("modals.passwordHelpTitle"),
+                        body: t("modals.passwordHelpBody"),
                       })
                     }
                   >
-                    Forgot password?
+                    {t("login.forgotPassword")}
                   </button>
                 </div>
 
@@ -385,40 +357,38 @@ export default function Login() {
                   className="veda-btn-login"
                   disabled={busy}
                 >
-                  {busy ? "Signing in…" : "Login"}
+                  {busy ? t("login.signingIn") : t("login.loginBtn")}
                 </button>
               </form>
 
               {/* Secondary links below Login button */}
               <div className="veda-card-secondary-links">
                 <div>
-                  New institution?{" "}
+                  {t("login.newInstitution")}{" "}
                   <button
                     type="button"
                     onClick={() =>
                       setModalInfo({
-                        title: "Institutional Registration Request",
-                        body:
-                          "This portal prototype is pre-loaded with demonstration institutions. Authorized institutions seeking AICTE portal access should apply through official AICTE onboarding notifications.",
+                        title: t("modals.regRequestTitle"),
+                        body: t("modals.regRequestBody"),
                       })
                     }
                   >
-                    Request an account
+                    {t("login.requestAccount")}
                   </button>
                 </div>
                 <div>
-                  Unable to sign in?{" "}
+                  {t("login.unableToSignIn")}{" "}
                   <button
                     type="button"
                     onClick={() =>
                       setModalInfo({
-                        title: "Account Assistance & Support",
-                        body:
-                          "For technical support during demonstration evaluation, please ensure you use either:\n\n1. Role 'Institution User': institute / demo123\n2. Role 'Admin / Reviewer': admin / demo123",
+                        title: t("modals.accountAssistTitle"),
+                        body: t("modals.accountAssistBody"),
                       })
                     }
                   >
-                    Account assistance
+                    {t("login.accountAssistance")}
                   </button>
                 </div>
               </div>
@@ -426,8 +396,8 @@ export default function Login() {
 
             {/* Demonstration prototype notice box */}
             <div className="veda-demo-notice-box" role="note">
-              <strong>Demonstration prototype.</strong> Sign-in is a mock integration
-              and all data shown in VEDA is demo data. Do not enter real credentials.
+              <strong>{language === "hi" ? "प्रदर्शन प्रोटोटाइप। " : "Demonstration prototype. "}</strong>
+              {t("common.demoNoticeBox")}
             </div>
           </div>
         </section>
@@ -437,62 +407,56 @@ export default function Login() {
       <footer className="veda-footer" role="contentinfo">
         <div className="veda-footer-inner">
           <div className="veda-footer-disclaimer">
-            VEDA is a demonstration prototype and is not an official AICTE or Government
-            of India service. Automated checks are preliminary; final decisions rest
-            with authorised human reviewers.
+            {t("common.footerDisclaimer")}
           </div>
-          <nav className="veda-footer-links" aria-label="Portal Policies and Support">
+          <nav className="veda-footer-links" aria-label={t("common.portalPolicies")}>
             <button
               type="button"
               className="veda-footer-link"
               onClick={() =>
                 setModalInfo({
-                  title: "Help & Support",
-                  body:
-                    "VEDA is designed to assist technical institutions and AICTE scrutiny committees in reviewing compliance documents, floor plans, faculty registrations, and land norms automatically via OCR and cross-referencing.",
+                  title: t("modals.helpTitle"),
+                  body: t("modals.helpBody"),
                 })
               }
             >
-              Help
+              {t("common.help")}
             </button>
             <button
               type="button"
               className="veda-footer-link"
               onClick={() =>
                 setModalInfo({
-                  title: "Accessibility Statement",
-                  body:
-                    "This interface adheres to GIGW (Guidelines for Indian Government Websites) accessibility standards, supporting screen readers, keyboard navigation, and variable font scaling (A- / A / A+).",
+                  title: t("modals.guidelinesTitle"),
+                  body: t("modals.guidelinesBody"),
                 })
               }
             >
-              Accessibility
+              {t("common.guidelines")}
             </button>
             <button
               type="button"
               className="veda-footer-link"
               onClick={() =>
                 setModalInfo({
-                  title: "Privacy Policy",
-                  body:
-                    "All uploaded files, test applications, and sample records in this prototype are processed locally within the demo environment for testing purposes only.",
+                  title: t("modals.privacyTitle"),
+                  body: t("modals.privacyBody"),
                 })
               }
             >
-              Privacy
+              {t("common.privacyPolicy")}
             </button>
             <button
               type="button"
               className="veda-footer-link"
               onClick={() =>
                 setModalInfo({
-                  title: "Disclaimer",
-                  body:
-                    "VEDA is a technical prototype developed for demonstration purposes. It does not replace statutory AICTE approvals or physical inspections required by law.",
+                  title: t("landing.limitsTitle"),
+                  body: t("landing.limitsText"),
                 })
               }
             >
-              Disclaimer
+              {t("landing.disclaimer")}
             </button>
           </nav>
         </div>
@@ -522,7 +486,7 @@ export default function Login() {
               className="veda-modal-close-btn"
               onClick={() => setModalInfo(null)}
             >
-              Close
+              {t("common.close")}
             </button>
           </div>
         </div>
