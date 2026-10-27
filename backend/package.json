@@ -1,0 +1,21 @@
+{
+  "name": "verifyai-backend",
+  "version": "1.0.0",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node --test --test-concurrency=1 tests/validate.test.js tests/extract.test.js tests/api.test.js tests/session.test.js tests/store.test.js",
+    "test:api": "node --test tests/api.test.js tests/session.test.js",
+    "test:unit": "node --test tests/validate.test.js tests/extract.test.js tests/store.test.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "multer": "^2.5.0",
+    "pdf-to-img": "^7.0.1",
+    "pdfjs-dist": "^6.4.299",
+    "tesseract.js": "^7.0.0"
+  }
+}

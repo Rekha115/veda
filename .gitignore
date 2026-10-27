@@ -1,0 +1,9 @@
+node_modules/
+dist/
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/data/applications.json
+backend/data/ocr-cache/
+.DS_Store
+*.log
+.env
